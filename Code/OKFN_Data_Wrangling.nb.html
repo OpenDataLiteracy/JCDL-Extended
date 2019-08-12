@@ -1777,10 +1777,9 @@ library(curl)</code></pre>
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGYxOCA8LSBqc29ubGl0ZTo6ZnJvbUpTT04oXCJodHRwOi8vdXMtY2l0aWVzLnN1cnZleS5va2ZuLm9yZy9hcGkvZW50cmllcy5qc29uXCIpICU+JSBcbiAgYXMuZGF0YS5mcmFtZSAlPiUgXG4gIGZsYXR0ZW4oKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGYxOCA8LSBqc29ubGl0ZTo6ZnJvbUpTT04oXCJodHRwOi8vdXMtY2l0aWVzLnN1cnZleS5va2ZuLm9yZy9hcGkvZW50cmllcy5qc29uXCIpICU+JSBcbiAgYXMuZGF0YS5mcmFtZVxuYGBgIn0= -->
 <pre class="r"><code>df18 &lt;- jsonlite::fromJSON(&quot;http://us-cities.survey.okfn.org/api/entries.json&quot;) %&gt;% 
-  as.data.frame %&gt;% 
-  flatten()</code></pre>
+  as.data.frame</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1801,8 +1800,23 @@ library(curl)</code></pre>
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuQ2l0eVBvcnRhbHMgPC0gbWVyZ2UoQ2l0eVBvcnRhbHMsIHN1YnNldChkZjE4LCBzZWxlY3QgPSBjKHJlc3VsdHMueWVhciwgcmVzdWx0cy5wbGFjZSwgcmVzdWx0cy5kYXRhc2V0LCByZXN1bHRzLmRldGFpbHMsIHJlc3VsdHMuc2NvcmUpKSwgYWxsLnggPSBUUlVFLCBhbGwueSA9IFRSVUUsIHN0cmluZ3NBc0ZhY3RvcnMgPSBGQUxTRSlcbmBgYCJ9 -->
+<pre class="r"><code>CityPortals &lt;- merge(CityPortals, subset(df18, select = c(results.year, results.place, results.dataset, results.details, results.score)), all.x = TRUE, all.y = TRUE, stringsAsFactors = FALSE)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuQ2l0eVBvcnRhbHMgJT4lIFxuICBmaWx0ZXIocmVzdWx0cy5wbGFjZSAhPSBcIlwiKSAlPiVcbiAgYXJyYW5nZShyZXN1bHRzLnBsYWNlLCByZXN1bHRzLnllYXIpICU+JVxuICB3cml0ZS5jc3YocGFzdGUoXCJ+L0RvY3VtZW50cy9HaXRIdWIvSkNETC1FeHRlbmRlZC9EYXRhL09LRk5fUG9ydGFsc19cIixmb3JtYXQoU3lzLnRpbWUoKSwgXCIlWS0lbS0lZFwiKSxcIi5jc3ZcIiwgc2VwPVwiXCIpKVxuYGBgIn0= -->
+<pre class="r"><code>CityPortals %&gt;% 
+  filter(results.place != &quot;&quot;) %&gt;%
+  arrange(results.place, results.year) %&gt;%
+  write.csv(paste(&quot;~/Documents/GitHub/JCDL-Extended/Data/OKFN_Portals_&quot;,format(Sys.time(), &quot;%Y-%m-%d&quot;),&quot;.csv&quot;, sep=&quot;&quot;))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiT0tGTiBEYXRhIFdyYW5nbGluZyIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKYGBge3J9CmxpYnJhcnkoc2hpbnkpCmxpYnJhcnkoanNvbmxpdGUpCmxpYnJhcnkoZHBseXIpCmxpYnJhcnkodGlkeXIpCmxpYnJhcnkoZ2dwbG90MikKbGlicmFyeShsdWJyaWRhdGUpCmxpYnJhcnkoY3VybCkKYGBgCgpgYGB7cn0KZGYxOCA8LSBqc29ubGl0ZTo6ZnJvbUpTT04oImh0dHA6Ly91cy1jaXRpZXMuc3VydmV5Lm9rZm4ub3JnL2FwaS9lbnRyaWVzLmpzb24iKSAlPiUgCiAgYXMuZGF0YS5mcmFtZSAlPiUgCiAgZmxhdHRlbigpCmBgYAoKYGBge3J9CmRmMTcgPC0ganNvbmxpdGU6OmZyb21KU09OKCJodHRwOi8vdXMtY2l0eS5jZW5zdXMub2tmbi5vcmcvYXBpL2VudHJpZXMuanNvbiIpICU+JSAKICBhcy5kYXRhLmZyYW1lIApgYGAKCmBgYHtyfQpDaXR5UG9ydGFscyA8LSBkZjE3ICU+JQogIHNlbGVjdChyZXN1bHRzLnllYXIsIHJlc3VsdHMucGxhY2UsIHJlc3VsdHMuZGF0YXNldCwgcmVzdWx0cy51cmwsIHJlc3VsdHMuZm9ybWF0LCByZXN1bHRzLnB1Ymxpc2hlciwgcmVzdWx0cy5zY29yZSkKYGBgCgo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiT0tGTiBEYXRhIFdyYW5nbGluZyIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKYGBge3J9CmxpYnJhcnkoc2hpbnkpCmxpYnJhcnkoanNvbmxpdGUpCmxpYnJhcnkoZHBseXIpCmxpYnJhcnkodGlkeXIpCmxpYnJhcnkoZ2dwbG90MikKbGlicmFyeShsdWJyaWRhdGUpCmxpYnJhcnkoY3VybCkKYGBgCgpgYGB7cn0KZGYxOCA8LSBqc29ubGl0ZTo6ZnJvbUpTT04oImh0dHA6Ly91cy1jaXRpZXMuc3VydmV5Lm9rZm4ub3JnL2FwaS9lbnRyaWVzLmpzb24iKSAlPiUgCiAgYXMuZGF0YS5mcmFtZQpgYGAKCmBgYHtyfQpkZjE3IDwtIGpzb25saXRlOjpmcm9tSlNPTigiaHR0cDovL3VzLWNpdHkuY2Vuc3VzLm9rZm4ub3JnL2FwaS9lbnRyaWVzLmpzb24iKSAlPiUgCiAgYXMuZGF0YS5mcmFtZSAKYGBgCgpgYGB7cn0KQ2l0eVBvcnRhbHMgPC0gZGYxNyAlPiUKICBzZWxlY3QocmVzdWx0cy55ZWFyLCByZXN1bHRzLnBsYWNlLCByZXN1bHRzLmRhdGFzZXQsIHJlc3VsdHMudXJsLCByZXN1bHRzLmZvcm1hdCwgcmVzdWx0cy5wdWJsaXNoZXIsIHJlc3VsdHMuc2NvcmUpCmBgYAoKYGBge3J9CkNpdHlQb3J0YWxzIDwtIG1lcmdlKENpdHlQb3J0YWxzLCBzdWJzZXQoZGYxOCwgc2VsZWN0ID0gYyhyZXN1bHRzLnllYXIsIHJlc3VsdHMucGxhY2UsIHJlc3VsdHMuZGF0YXNldCwgcmVzdWx0cy5kZXRhaWxzLCByZXN1bHRzLnNjb3JlKSksIGFsbC54ID0gVFJVRSwgYWxsLnkgPSBUUlVFLCBzdHJpbmdzQXNGYWN0b3JzID0gRkFMU0UpCmBgYAoKYGBge3J9CkNpdHlQb3J0YWxzICU+JSAKICBmaWx0ZXIocmVzdWx0cy5wbGFjZSAhPSAiIikgJT4lCiAgYXJyYW5nZShyZXN1bHRzLnBsYWNlLCByZXN1bHRzLnllYXIpICU+JQogIHdyaXRlLmNzdihwYXN0ZSgifi9Eb2N1bWVudHMvR2l0SHViL0pDREwtRXh0ZW5kZWQvRGF0YS9PS0ZOX1BvcnRhbHNfIixmb3JtYXQoU3lzLnRpbWUoKSwgIiVZLSVtLSVkIiksIi5jc3YiLCBzZXA9IiIpKQpgYGAK</div>
 
 
 

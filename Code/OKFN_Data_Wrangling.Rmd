@@ -15,8 +15,7 @@ library(curl)
 
 ```{r}
 df18 <- jsonlite::fromJSON("http://us-cities.survey.okfn.org/api/entries.json") %>% 
-  as.data.frame %>% 
-  flatten()
+  as.data.frame
 ```
 
 ```{r}
@@ -29,3 +28,13 @@ CityPortals <- df17 %>%
   select(results.year, results.place, results.dataset, results.url, results.format, results.publisher, results.score)
 ```
 
+```{r}
+CityPortals <- merge(CityPortals, subset(df18, select = c(results.year, results.place, results.dataset, results.details, results.score)), all.x = TRUE, all.y = TRUE, stringsAsFactors = FALSE)
+```
+
+```{r}
+CityPortals %>% 
+  filter(results.place != "") %>%
+  arrange(results.place, results.year) %>%
+  write.csv(paste("~/Documents/GitHub/JCDL-Extended/Data/OKFN_Portals_",format(Sys.time(), "%Y-%m-%d"),".csv", sep=""))
+```
