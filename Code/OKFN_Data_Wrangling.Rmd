@@ -1,0 +1,31 @@
+---
+title: "OKFN Data Wrangling"
+output: html_notebook
+---
+
+```{r}
+library(shiny)
+library(jsonlite)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(lubridate)
+library(curl)
+```
+
+```{r}
+df18 <- jsonlite::fromJSON("http://us-cities.survey.okfn.org/api/entries.json") %>% 
+  as.data.frame %>% 
+  flatten()
+```
+
+```{r}
+df17 <- jsonlite::fromJSON("http://us-city.census.okfn.org/api/entries.json") %>% 
+  as.data.frame 
+```
+
+```{r}
+CityPortals <- df17 %>%
+  select(results.year, results.place, results.dataset, results.url, results.format, results.publisher, results.score)
+```
+
