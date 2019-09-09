@@ -38,3 +38,18 @@ CityPortals %>%
   arrange(results.place, results.year) %>%
   write.csv(paste("~/Documents/GitHub/JCDL-Extended/Data/OKFN_Portals_",format(Sys.time(), "%Y-%m-%d"),".csv", sep=""))
 ```
+
+```{r}
+DataEntry <- CityPortals %>% 
+  filter(results.place != "") %>%
+  select(results.place) %>%
+  distinct(results.place) %>%
+  mutate(City = NA, State = NA, Portal_URL = NA, Software = NA, TotalDataSetsAvailable = NA, NotesDataSetsAvailable = NA, CountVettedPublicLibData = NA, TypePLDataAvailable = NA, LibraryDataCategories = NA, DateLibDataLastUpdated = NA, Notes = NA) %>%
+  arrange(results.place)
+```
+
+```{r}
+DataEntry %>%
+  write.csv(paste("~/Documents/GitHub/JCDL-Extended/Data/Data_Entry_",format(Sys.time(), "%Y-%m-%d"),".csv", sep=""))
+```
+
