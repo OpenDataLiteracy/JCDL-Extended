@@ -109,7 +109,7 @@ San Antonio,TX,https://data.sanantonio.gov/,2019-12-16,CKAN,73,,1,Libraries,Faci
 San Diego,CA,https://data.sandiego.gov/,2019-12-16,JKAN,91,,1,Library locations,FacilitiesAndGeospatial,2019-09-17,,
 San Francisco,CA,https://datasf.org/opendata/,2019-12-16,Socrata,395,Restricted to type: datasets,1,Library Usage,"Patrons,CatalogAndCirculation",2019-09-05,,
 San Jose,CA,https://data.sanjoseca.gov/,2019-12-16,CKAN,34,,1,Library - California Room Data,CatalogAndCirculation,2019-05-24,"""The California Room collects materials on California history with an emphasis on the city of San Jose and the greater Santa Clara Valley.""",
-Santa Clarita,CA,http://data.santa-clarita.com/,2020-01-04,ArcGIS,20,,2,"Santa Clarita Library circulation 2016, Santa Clarita Libraries All Data","CatalogAndCirculation,EventsAndOutreach,Patrons,TechnologyOfferings,FacilitiesAndGeospatial",2019-07-19,"Looks like one dataset was duplicated (circ 2016), only counted it once, but the data appears to be corrupted",
+Santa Clarita,CA,http://data.santa-clarita.com/,2020-01-04,Arcgis,20,,2,"Santa Clarita Library circulation 2016, Santa Clarita Libraries All Data","CatalogAndCirculation,EventsAndOutreach,Patrons,TechnologyOfferings,FacilitiesAndGeospatial",2019-07-19,"Looks like one dataset was duplicated (circ 2016), only counted it once, but the data appears to be corrupted",
 Santa Monica,CA,https://data.smgov.net/,2019-12-17,Socrata,30,Restricted to type: datasets,0,,,,,
 Savannah,GA,https://data-sagis.opendata.arcgis.com/,2019-12-17,Arcgis,133,Restricted to Data,1,Libraries,FacilitiesAndGeospatial,2019-10-24,Combination of county & city data,
 Scottsdale,AZ,http://data.scottsdaleaz.gov/,2019-12-17,CKAN,46,,1,Libraries,FacilitiesAndGeospatial,2019-05-09,,

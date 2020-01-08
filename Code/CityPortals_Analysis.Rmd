@@ -10,34 +10,48 @@ output:
 # Load relevant libraries
 library(dplyr)
 library(Hmisc)
-library(summarytools)
+#library(summarytools)
 library(tidyr)
 library(splitstackshape)
+library(httr)
 ```
 
 ```{r}
-# Read in full data 
-jcdl <- read.csv("~/Google Drive File Stream/My Drive/ODL/JCDL/JCDLAnalysisDataset012319.tsv", sep = "\t", strip.white = TRUE)
+token <- read.delim("~/Google Drive File Stream/My Drive/Keys/g_access.txt", stringsAsFactor = FALSE, header = FALSE)
 ```
 
 ```{r}
-# Fix date format in DateLibDataLastUpdated
-jcdl$DateLibDataLastUpdated <- as.Date(jcdl$DateLibDataLastUpdated, format = "%m.%d.%Y")
-# Fix date format in StartDate
-jcdl$StartDate <- as.Date(jcdl$StartDate, format = "%m/%d/%Y")
-# Fix date format in EndDate
-jcdl$EndDate <- as.Date(jcdl$EndDate, format = "%m/%d/%Y")
+# Read in portals data stored in private github repository
+url=paste0("https://raw.githubusercontent.com/OpenDataLiteracy/JCDL-Extended/master/Data/KAS_JCDL_PrelimClean_2019-12-16.csv")
+x=GET(url, add_headers(Authorization = paste("token", token, sep = " ")))
+portals <- content(x, type="text/csv", encoding = "UTF-8")
+```
+
+```{r}
+# Read in IMLS data stored in private github repository
+url=paste0("https://raw.githubusercontent.com/OpenDataLiteracy/JCDL-Extended/master/Data/IMLS_Data_PLS_FY17_AE_pud17i.csv")
+x=GET(url, add_headers(Authorization = paste("token", token, sep = " ")))
+imls <- content(x, type="text/csv", encoding = "UTF-8")
+```
+
+```{r}
+# Removed random additional column in portals dataset
+portals <- portals %>% select(-X13)
+# Fix date formats
+portals$DateLibDataLastUpdated <- as.Date(portals$DateLibDataLastUpdated, format = "%Y-%m-%d")
+portals$DatePortalAccessed <- as.Date(portals$DatePortalAccessed, format = "%Y-%m-%d")
+# Variables to datatype character
+portals$Portal_URL <- as.character(portals$Portal_URL)
+```
+
+```{r}
 # Variables to datatype factor
 jcdl$Locale <- as.factor(jcdl$Locale)
 jcdl$ReportingStatus <- as.factor(jcdl$ReportingStatus)
 jcdl$MailingZip <- as.factor(jcdl$MailingZip)
 jcdl$Year <- as.factor(jcdl$Year)
-# Variables to datatype character
-jcdl$Portal_URL <- as.character(jcdl$Portal_URL)
-jcdl$NotesDatasetsAvailable <- as.character(jcdl$NotesDatasetsAvailable)
-jcdl$Notes <- as.character(jcdl$Notes)
-jcdl$LibraryDataCategories <- as.character(jcdl$LibraryDataCategories)
 ```
+
 
 ```{r}
 # Check unique values
