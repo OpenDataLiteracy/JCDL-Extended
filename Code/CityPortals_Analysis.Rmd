@@ -35,6 +35,13 @@ imls <- content(x, type="text/csv", encoding = "UTF-8")
 ```
 
 ```{r}
+# Read in IMLS data stored in private github repository
+url=paste0("https://raw.githubusercontent.com/OpenDataLiteracy/JCDL-Extended/master/Data/PLS_FY17_Outlet_pud17i.csv")
+x=GET(url, add_headers(Authorization = paste("token", token, sep = " ")))
+imls_outlet <- content(x, type="text/csv", encoding = "UTF-8")
+```
+
+```{r}
 # Removed random additional column in portals dataset
 portals <- portals %>% select(-X13)
 # Fix date formats
@@ -45,62 +52,75 @@ portals$Portal_URL <- as.character(portals$Portal_URL)
 ```
 
 ```{r}
-# Variables to datatype factor
-jcdl$Locale <- as.factor(jcdl$Locale)
-jcdl$ReportingStatus <- as.factor(jcdl$ReportingStatus)
-jcdl$MailingZip <- as.factor(jcdl$MailingZip)
-jcdl$Year <- as.factor(jcdl$Year)
+# Split into individual categories and create dummy variables.
+portals <- cSplit_e(portals, split.col = "LibraryDataCategories", sep = ",", type = "character", 
+         mode = "binary", fixed = TRUE, fill = 0)
 ```
 
+```{r}
+# Calculate (and add column) the percentage of the city portal data that is public library related
+portals$ProportionPublicLibData <- portals$CountVettedPublicLibData / portals$TotalDataSetsAvailable
+```
+
+```{r} 
+# Fix different capitalizations
+portals <- portals %>%
+       mutate(City = tolower(City),
+              State = tolower(State))
+
+imls <- imls %>%
+       mutate(CITY = tolower(CITY),
+              STABR = tolower(STABR))
+
+# Merge datasets on city, state
+temp <- merge(portals, imls, by.x = c("City", "State"), by.y = c("CITY", "STABR"), all.x = TRUE)
+```
+
+```{r}
+merged <- merge(temp, imls_outlet, by = "LIBNAME", all.x = TRUE)
+```
+
+```{r}
+# Variables to datatype factor
+# jcdl$Locale <- as.factor(jcdl$Locale)
+# jcdl$ReportingStatus <- as.factor(jcdl$ReportingStatus)
+# jcdl$MailingZip <- as.factor(jcdl$MailingZip)
+# jcdl$Year <- as.factor(jcdl$Year)
+```
 
 ```{r}
 # Check unique values
-unique(jcdl$Software)
+unique(merged$Software)
 ```
 
 ```{r}
 # See what values we have for Locale
-unique(jcdl$Locale)
+unique(merged$LOCALE)
 ```
 
 ```{r}
 # Create a LocaleDescr column and fill based on condition
-jcdl <- jcdl %>% 
+merged <- merged %>% 
     mutate(LocaleDescr = case_when(
-                Locale == 11 ~ "City Large",
-                Locale == 12 ~ "City Midsize",
-                Locale == 13 ~ "City Small",
-                Locale == 21 ~ "Suburban Large"
+                LOCALE == 11 ~ "City Large",
+                LOCALE == 12 ~ "City Midsize",
+                LOCALE == 13 ~ "City Small",
+                LOCALE == 21 ~ "Suburban Large",
+                LOCALE == 22 ~ "Suburban Midsize",
+                LOCALE == 23 ~ "Suburban Small",
+                LOCALE == 31 ~ "Town Fringe",
+                LOCALE == 32 ~ "Town Distant",
+                LOCALE == 33 ~ "Town Remote",
+                LOCALE == 41 ~ "Rural Fringe",
+                LOCALE == 42 ~ "Rural Distant",
+                LOCALE == 43 ~ "Rural Remote"
 ))
-
 ```
+
 
 ```{r}
 # Change datatype of LocaleDescr
-jcdl$LocaleDescr <- as.factor(jcdl$LocaleDescr)
-```
-
-```{r}
-# Create a RepStatDescr column and fill based on condition
-jcdl <- jcdl %>% 
-    mutate(RepStatDescr = case_when(
-                ReportingStatus == 1 ~ "Respondent with no imputed data",
-                ReportingStatus == 2 ~ "Respondent with both reported and imputed data",
-                ReportingStatus == 3 ~ "Nonrespondent not imputed",
-                ReportingStatus == 4 ~ "Nonrespondent with imputed data"
-))
-```
-
-```{r}
-# Change datatype of RepStatDescr
-jcdl$RepStatDescr <- as.factor(jcdl$RepStatDescr)
-```
-
-```{r}
-# Really helpful code from https://stackoverflow
-# Split into individual categories and create dummy variables.
-jcdl <- cSplit_e(jcdl, split.col = "LibraryDataCategories", sep = ",", type = "character", 
-         mode = "binary", fixed = TRUE, fill = 0)
+merged$LocaleDescr <- as.factor(merged$LocaleDescr)
 ```
 
 ```{r}
