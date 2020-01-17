@@ -1,4 +1,4 @@
-﻿City,State,Portal_URL,DatePortalAccessed,Software,TotalDataSetsAvailable,NotesDataSetsAvailable,CountVettedPublicLibData,TypePLDataAvailable,LibraryDataCategories,DateLibDataLastUpdated,Notes,2017OpenDataCensusScore
+﻿City,State,Portal_URL,DatePortalAccessed,Software,TotalDataSetsAvailable,NotesDataSetsAvailable,CountVettedPublicLibData,TypePLDataAvailable,LibraryDataCategories,DateLibDataLastUpdated,Notes,OpenDataCensusScore2017
 Albuquerque,NM,https://www.cabq.gov/abq-data,2019-12-16,Other,52,,0,,,,"Each dataset on their website links to an index with either pdf, xml, or csv files. For example: 'Address atlas' links to pdfs of maps of neighborhoods: http://data.cabq.gov/business/addressatlas/APage_A-08-Z.pdf. Only counted dataset names, and not the number of files in each dataset.",995
 Anchorage,AK,https://data.muni.org/,2019-12-16,Socrata,16,Restricted to type: datasets,0,,,,,1430
 Ann Arbor,MI,https://www.a2gov.org/services/data/Pages/default.aspx,2019-12-16,Other,42,Did not count RSS. Counted two different police datasets located in same row.,0,,,,,770
