@@ -14,6 +14,7 @@ library(dplyr)
 library(tidyr)
 library(splitstackshape)
 library(httr)
+library(ggplot2)
 ```
 
 ```{r}
@@ -207,64 +208,64 @@ summary(single_libs_PropLR)
 
 ```{r}
 # Simple linear regression model
-merged_VettLR <- lm(CountVettedPublicLibData ~ OpenDataCensusScores, data=merged)
-summary(merged_VettLR)
+single_libs_VettLR <- lm(CountVettedPublicLibData ~ OpenDataCensusScore2017, data=single_libs)
+summary(single_libs_VettLR)
 ```
 
 ```{r}
 # Simple linear regression model
-merged_TotLR <- lm(TotalDatasetsAvailable ~ OpenDataCensusScores, data=merged)
-summary(merged_TotLR)
+single_libs_TotLR <- lm(TotalDataSetsAvailable ~ OpenDataCensusScore2017, data=single_libs)
+summary(single_libs_TotLR)
 ```
 
 ```{r}
 # Simple linear regression model
-merged_PropSizeLR <- lm(ProportionPublicLibData ~ LOCALE_ADD_DESCR, data=merged)
-summary(merged_PropSizeLR)
+single_libs_PropSizeLR <- lm(ProportionPublicLibData ~ LOCALE_ADD_DESCR, data=single_libs)
+summary(single_libs_PropSizeLR)
 ```
 
 ```{r}
 # Simple linear regression model
-merged_VettSizeLR <- lm(CountVettedPublicLibData ~ LOCALE_ADD_DESCR, data=merged)
-summary(merged_VettSizeLR)
+single_libs_VettSizeLR <- lm(CountVettedPublicLibData ~ LOCALE_ADD_DESCR, data=single_libs)
+summary(single_libs_VettSizeLR)
 ```
 
 ```{r}
 # Simple linear regression model
-merged_TotSizeLR <- lm(TotalDataSetsAvailable ~ LOCALE_ADD_DESCR, data=merged)
-summary(merged_TotSizeLR)
+single_libs_TotSizeLR <- lm(TotalDataSetsAvailable ~ LOCALE_ADD_DESCR, data=single_libs)
+summary(single_libs_TotSizeLR)
+```
+
+
+```{r}
+# Simple linear regression model total datasets avail and total operating revenue
+single_libs_TotRevCityLR <- lm(TotalDataSetsAvailable ~ TOTINCM, data=single_libs)
+summary(single_libs_TotRevCityLR)
 ```
 
 
 ```{r}
 # Simple linear regression model
-jcdl_TotRevCityLR <- lm(TotalDataSetsAvailable ~ TotalRevenue, data=jcdl)
-summary(jcdl_TotRevCityLR)
-```
-
-
-```{r}
-# Simple linear regression model
-jcdl_TotRevLR <- lm(CountVettedPublicLibData ~ TotalRevenue, data=jcdl)
-summary(jcdl_TotRevLR)
+single_libs_TotRevLR <- lm(CountVettedPublicLibData ~ TOTINCM, data=single_libs)
+summary(single_libs_TotRevLR)
 ```
 
 ```{r}
 # Simple linear regression model
-jcdl_TotStaffLR <- lm(CountVettedPublicLibData ~ TotalStaff, data=jcdl)
-summary(jcdl_TotStaffLR)
+single_libs_TotStaffLR <- lm(CountVettedPublicLibData ~ TOTSTAFF, data=single_libs)
+summary(single_libs_TotStaffLR)
 ```
 
 ```{r}
 # Create temporary matrix to use in Pearson's correlation
-x <- jcdl %>% select(TotalRevenue, TotalStaff)
-x$TotalRevenue <- as.numeric(x$TotalRevenue)
+x <- single_libs %>% select(TOTINCM, TOTSTAFF)
+x$TOTINCM <- as.numeric(x$TOTINCM)
 
 ```
 
 ```{r}
 # Calculate Pearson's correlation
-cor(x)
+cor(x, use = "complete.obs")
 ```
 
 
@@ -274,11 +275,11 @@ cor(x)
 
 # Adapted from https://stackoverflow.com/questions/30583917/regression-loop-in-r-for-data-frames
 
-for(i in names(jcdl))
+for(i in names(single_libs))
 { 
-    if(is.numeric(jcdl[,i]))  ##if column is numeric run regression
+    if(is.numeric(single_libs[,i]))  ##if column is numeric run regression
     {       
-       fit <- lm(ProportionPublicLibData ~ jcdl[,i], data=jcdl) 
+       fit <- lm(ProportionPublicLibData ~ single_libs[,i], data=single_libs) 
        coeff <- summary(fit)$coefficients[,4][2] #output only the p-values
        writeLines(paste(coeff,i,"\n"))
     }
@@ -291,11 +292,11 @@ for(i in names(jcdl))
 
 # Adapted from https://stackoverflow.com/questions/30583917/regression-loop-in-r-for-data-frames
 
-for(i in names(jcdl))
+for(i in names(single_libs))
 { 
-    if(is.numeric(jcdl[,i]))  ##if column is numeric run regression
+    if(is.numeric(single_libs[,i]))  ##if column is numeric run regression
     {       
-       fit <- lm(CountVettedPublicLibData ~ jcdl[,i], data=jcdl) 
+       fit <- lm(CountVettedPublicLibData ~ single_libs[,i], data=single_libs) 
        coeff <- summary(fit)$coefficients[,4][2] #output only the p-values
        writeLines(paste(coeff,i,"\n"))
     }
@@ -303,13 +304,12 @@ for(i in names(jcdl))
 ```
 
 ```{r}
-library(reshape2)
-dfm <- melt(jcdl[,c('LibraryDataCategories_catalogandcirculation','LibraryDataCategories_eventscalendar',
-                    'LibraryDataCategories_facilities', 'LibraryDataCategories_financial',
-                    'LibraryDataCategories_geospatial', 'LibraryDataCategories_patrons',
-                    'LibraryDataCategories_publicrecords', 'LibraryDataCategories_technologyofferings',
-'LibraryDataCategories_utilities')])
+dfm <- reshape2::melt(single_libs[,c('LibraryDataCategories_CatalogAndCirculation','LibraryDataCategories_EventsAndOutreach',
+                    'LibraryDataCategories_FacilitiesAndGeospatial', 'LibraryDataCategories_Financial',
+                    'LibraryDataCategories_HumanResources', 'LibraryDataCategories_Patrons',
+                    'LibraryDataCategories_PublicRecords', 'LibraryDataCategories_TechnologyOfferings')])
 ```
+
 ```{r}
 # total datasets by category
 dfm <- dfm %>% group_by(variable) %>% summarise("total" = sum(value))
@@ -319,54 +319,52 @@ dfm <- dfm %>% group_by(variable) %>% summarise("total" = sum(value))
 # barchart of datset totals by category
 p <- ggplot(dfm, aes(variable, total)) +
   geom_bar(stat="identity", fill="steelblue") +
-  scale_x_discrete(labels=c("LibraryDataCategories_catalogandcirculation" = "Catalog & Circulation",
-                            "LibraryDataCategories_eventscalendar" = "Events & Calendar",
-                            "LibraryDataCategories_facilities" = "Facilities",
-                            "LibraryDataCategories_financial" = "Financial",
-                            "LibraryDataCategories_geospatial" = "Geospatial",
-                            "LibraryDataCategories_patrons" = "Patrons",
-                            "LibraryDataCategories_publicrecords" = "Public Records",
-                            "LibraryDataCategories_technologyofferings" = "Technology Offerings",
-                            "LibraryDataCategories_utilities" = "Utilities")) +
+  scale_x_discrete(labels=c("LibraryDataCategories_CatalogAndCirculation" = "Catalog & Circulation",
+                            "LibraryDataCategories_EventsAndOutreach" = "Events & Outreach",
+                            "LibraryDataCategories_FacilitiesAndGeospatial" = "Facilities & Geospatial",
+                            "LibraryDataCategories_Financial" = "Financial",
+                            "LibraryDataCategories_HumanResources" = "Human Resources",
+                            "LibraryDataCategories_Patrons" = "Patrons",
+                            "LibraryDataCategories_PublicRecords" = "Public Records",
+                            "LibraryDataCategories_TechnologyOfferings" = "Technology Offerings")) +
   theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
   geom_text(aes(label=total), vjust=1.6, color="white", size=3.5) +
   xlab("Dataset Category") +
   ylab("Datasets Available")
 p
-ggsave("~/Google Drive File Stream/My Drive/ODL/JCDL/categories_barchart.png")
+ggsave("~/Documents/Github/JCDL-Extended/Images/categories_barchart.png")
 ```
 
 ```{r}
-# same barcgart as above but arranged in descending order of dataset count
+# same barchart as above but arranged in descending order of dataset count
 p <- ggplot(dfm, aes(x = reorder(variable, -total), total)) +
   geom_bar(stat="identity", fill="steelblue") +
-  scale_x_discrete(labels=c("LibraryDataCategories_catalogandcirculation" = "Catalog & Circulation",
-                            "LibraryDataCategories_eventscalendar" = "Events & Calendar",
-                            "LibraryDataCategories_facilities" = "Facilities",
-                            "LibraryDataCategories_financial" = "Financial",
-                            "LibraryDataCategories_geospatial" = "Geospatial",
-                            "LibraryDataCategories_patrons" = "Patrons",
-                            "LibraryDataCategories_publicrecords" = "Public Records",
-                            "LibraryDataCategories_technologyofferings" = "Technology Offerings",
-                            "LibraryDataCategories_utilities" = "Utilities")) +
+  scale_x_discrete(labels=c("LibraryDataCategories_CatalogAndCirculation" = "Catalog & Circulation",
+                            "LibraryDataCategories_EventsAndOutreach" = "Events & Outreach",
+                            "LibraryDataCategories_FacilitiesAndGeospatial" = "Facilities & Geospatial",
+                            "LibraryDataCategories_Financial" = "Financial",
+                            "LibraryDataCategories_HumanResources" = "Human Resources",
+                            "LibraryDataCategories_Patrons" = "Patrons",
+                            "LibraryDataCategories_PublicRecords" = "Public Records",
+                            "LibraryDataCategories_TechnologyOfferings" = "Technology Offerings")) +
   theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
   geom_text(aes(label=total), vjust=-0.4, color="black", size=3.5) +
   xlab("Dataset Category") +
   ylab("Datasets Available")
 p
-ggsave("~/Google Drive File Stream/My Drive/ODL/JCDL/categories_barchart_sorted.png")
+ggsave("~/Documents/Github/JCDL-Extended/Images/categories_barchart_sorted.png")
 ```
 
 ```{r}
-nrow(jcdl[jcdl$CountVettedPublicLibData > 0,])
-length(jcdl$CountVettedPublicLibData[jcdl$CountVettedPublicLibData > 0])
-sum(which(jcdl$CountVettedPublicLibData > 0))
+nrow(single_libs[single_libs$CountVettedPublicLibData > 0,])
+length(single_libs$CountVettedPublicLibData[single_libs$CountVettedPublicLibData > 0])
+sum(which(single_libs$CountVettedPublicLibData > 0))
 ```
 
 ```{r}
 # Create df with just necessary columns and rows where CountVettedPublicLibData is greater than 0
-no_ds <- jcdl %>%
-  select(City, State, Software, TotalDatasetsAvailable, CountVettedPublicLibData, ProportionPublicLibData) %>%
+no_ds <- single_libs %>%
+  select(City, State, Software, TotalDataSetsAvailable, CountVettedPublicLibData, ProportionPublicLibData) %>%
   filter(CountVettedPublicLibData > 0)
 ```
 
@@ -379,7 +377,7 @@ p1 <- ggplot(no_ds2, aes(City, CountVettedPublicLibData)) +
   xlab("City") +
   ylab("Datasets Available") 
 p1
-#ggsave("~/Google Drive File Stream/My Drive/ODL/JCDL/cities_barchart.png")
+ggsave("~/Documents/Github/JCDL-Extended/Images/cities_barchart.png")
 ```
 
 ```{r}
@@ -391,39 +389,39 @@ p1 <- ggplot(no_ds2, aes(x = reorder(City, -CountVettedPublicLibData), CountVett
   xlab("City") +
   ylab("Datasets Available") 
 p1
-ggsave("~/Google Drive File Stream/My Drive/ODL/JCDL/cities_barchart_sorted_morethanone.png")
+ggsave("~/Documents/Github/JCDL-Extended/Images/cities_barchart_sorted_morethanone.png")
 ```
 
 ```{r, fig.width=10, fig.height=4}
-df1 <- data.frame(jcdl$TotalRevenue/10000000, jcdl$CountVettedPublicLibData, jcdl$City)
-df2 <- melt(df1, id.vars='jcdl.City')
+df1 <- data.frame(single_libs$TOTINCM/10000000, single_libs$CountVettedPublicLibData, single_libs$City)
+df2 <- reshape2::melt(df1, id.vars='single_libs.City')
 head(df2)
 
 
-ggplot(df2, aes(x=jcdl.City, y=value, fill=variable)) +
+ggplot(df2, aes(x=single_libs.City, y=value, fill=variable)) +
     geom_bar(stat='identity', position='dodge')+
   theme(axis.text.x = element_text(angle = 75, hjust = 1))
 ```
 
 
 ```{r}
-p1 <- ggplot(jcdl, aes(City, TotalRevenue)) +
+p1 <- ggplot(single_libs, aes(City, TOTINCM)) +
   geom_bar(stat="identity", fill="steelblue") +
   theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
   xlab("City") +
   ylab("Total Library Revenue") 
 p1
-ggsave("~/Google Drive File Stream/My Drive/ODL/JCDL/cities_revenue_barchart.png")
+ggsave("~/Documents/Github/JCDL-Extended/Images/cities_revenue_barchart.png")
 ```
 
 ```{r}
-jcdl %>%
+single_libs %>%
   select(City, CountVettedPublicLibData) %>%
   arrange(desc(CountVettedPublicLibData))
 ```
 
 ```{r}
-jcdl %>%
-  select(City, OpenDataCensusScores) %>%
-  arrange(desc(OpenDataCensusScores))
+single_libs %>%
+  select(City, OpenDataCensusScore2017) %>%
+  arrange(desc(OpenDataCensusScore2017))
 ```

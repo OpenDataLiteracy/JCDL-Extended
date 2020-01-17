@@ -1,23 +1,23 @@
 ﻿City,State,Portal_URL,DatePortalAccessed,Software,TotalDataSetsAvailable,NotesDataSetsAvailable,CountVettedPublicLibData,TypePLDataAvailable,LibraryDataCategories,DateLibDataLastUpdated,Notes,OpenDataCensusScore2017
-Albuquerque,NM,https://www.cabq.gov/abq-data,2019-12-16,Other,52,,0,,,,"Each dataset on their website links to an index with either pdf, xml, or csv files. For example: 'Address atlas' links to pdfs of maps of neighborhoods: http://data.cabq.gov/business/addressatlas/APage_A-08-Z.pdf. Only counted dataset names, and not the number of files in each dataset.",995
+Albuquerque,NM,https://www.cabq.gov/abq-data,2019-12-16,Other,52,,0,,,,Each dataset on their website links to an index with either pdf; xml; or csv files. For example: 'Address atlas' links to pdfs of maps of neighborhoods: http://data.cabq.gov/business/addressatlas/APage_A-08-Z.pdf. Only counted dataset names; and not the number of files in each dataset.,995
 Anchorage,AK,https://data.muni.org/,2019-12-16,Socrata,16,Restricted to type: datasets,0,,,,,1430
 Ann Arbor,MI,https://www.a2gov.org/services/data/Pages/default.aspx,2019-12-16,Other,42,Did not count RSS. Counted two different police datasets located in same row.,0,,,,,770
 Arlington,TX,https://data-arlingtontx.opendata.arcgis.com/,2019-12-16,Arcgis,39,Restricted to Data,1,List of library branches,FacilitiesAndGeospatial,2018-11-27,,N/A
-Arlington,VA,https://data.arlingtonva.us/home/,2019-12-16,Junar,101,Restricted to type: datasets,4,"Library materials owned, Library rooms, Library usage & performance, Library public computers","CatalogAndCirculation,FacilitiesAndGeospatial,Patrons,TechnologyOfferings,HumanResources,EventsAndOutreach",2019-12-02,,520
+Arlington,VA,https://data.arlingtonva.us/home/,2019-12-16,Junar,101,Restricted to type: datasets,4,Library materials owned; Library rooms; Library usage & performance; Library public computers,CatalogAndCirculation;FacilitiesAndGeospatial;Patrons;TechnologyOfferings;HumanResources;EventsAndOutreach,2019-12-02,,520
 Asheville,NC,http://data-avl.opendata.arcgis.com/,2019-12-16,Arcgis,306,Restricted to Data,0,,,,,1120
 Atlanta,GA,https://opendata.atlantaregional.com/,2019-12-16,Arcgis,"1,602",Restricted to Data,1,Library Community Facilities,FacilitiesAndGeospatial,2018-08-24,,1105
-Austin,TX,https://data.austintexas.gov/,2019-12-16,Socrata,"1,143",Restricted to type: datasets,5,"Public Library Locations,Wireless Usage,Collection Size and Cardholders,Public Library Social Media Presence,FY Circulation by Library and Format","FacilitiesAndGeospatial,TechnologyOfferings,CatalogAndCirculation,Patrons,TechnologyOfferings",2019-07-29,,1855
+Austin,TX,https://data.austintexas.gov/,2019-12-16,Socrata,"1,143",Restricted to type: datasets,5,Public Library Locations;Wireless Usage;Collection Size and Cardholders;Public Library Social Media Presence;FY Circulation by Library and Format,FacilitiesAndGeospatial;TechnologyOfferings;CatalogAndCirculation;Patrons;TechnologyOfferings,2019-07-29,,1855
 Baltimore,MD,https://data.baltimorecity.gov/,2019-12-16,Socrata,107,Restricted to type: datasets,1,Library Locations,FacilitiesAndGeospatial,2019-04-22,,520
 Bangor,ME,,,,,,,,,,No open data website found,0
-Baton Rouge,LA,https://data.brla.gov/,2019-12-16,Socrata,43,Restricted to type: datasets,3,"Library Gate Counts,Library Circulation Statistics,Library Computer Usage Stats","Patrons,TechnologyOfferings,CatalogAndCirculation",2019-12-02,,1425
+Baton Rouge,LA,https://data.brla.gov/,2019-12-16,Socrata,43,Restricted to type: datasets,3,Library Gate Counts;Library Circulation Statistics;Library Computer Usage Stats,Patrons;TechnologyOfferings;CatalogAndCirculation,2019-12-02,,1425
 Bell,CA,,,,,,,,,,No open data website found,365
 Bellevue,WA,https://data.bellevuewa.gov/,2019-12-16,Socrata,22,Restricted to type: datasets,0,,,,,N/A
 Birmingham,AL,https://data.birminghamal.gov/,2019-12-16,CKAN,91,,0,,,,,495
-Blacksburg,VA,,,,,,,,,,"State of Virginia had an open data portal: http://data.virginia.gov/. No open data website found for Blacksburg, VA.",265
+Blacksburg,VA,,,,,,,,,,State of Virginia had an open data portal: http://data.virginia.gov/. No open data website found for Blacksburg; VA.,265
 Bloomington,IN,https://data.bloomington.in.gov/,2019-12-16,CKAN,203,,0,,,,,N/A
 Boise,ID,http://opendata.cityofboise.org/,2019-12-16,Arcgis,58,Restricted to Data,0,,,,,680
-Boston,MA,https://data.boston.gov/,2019-12-16,CKAN,158,,3,"Public libraries,Central library electricity usage,Boston public library daily active user counts","FacilitiesAndGeospatial,Patrons",2019-12-16,,1390
-Boulder,CO,https://bouldercolorado.gov/open-data,2019-12-16,CKAN,113,,3,"Library performance indicators,Library and Bldg 61 Events and Programs,Registered library patrons","CatalogAndCirculation,FacilitiesAndGeospatial,EventsAndOutreach,Patrons,TechnologyOfferings,HumanResources",2019-05-06,Performance indicators dataset includes summary counts for a variety of different things,520
+Boston,MA,https://data.boston.gov/,2019-12-16,CKAN,158,,3,Public libraries;Central library electricity usage;Boston public library daily active user counts,FacilitiesAndGeospatial;Patrons,2019-12-16,,1390
+Boulder,CO,https://bouldercolorado.gov/open-data,2019-12-16,CKAN,113,,3,Library performance indicators;Library and Bldg 61 Events and Programs;Registered library patrons,CatalogAndCirculation;FacilitiesAndGeospatial;EventsAndOutreach;Patrons;TechnologyOfferings;HumanResources,2019-05-06,Performance indicators dataset includes summary counts for a variety of different things,520
 Buffalo,NY,https://data.buffalony.gov/,2019-12-16,Socrata,661,Restricted to type: datasets,0,,,,,N/A
 Burbank,CA,,,,,,,,,,No open data website found,100
 Burlington,VT,https://data-burlingtonvt.opendata.arcgis.com/,2019-12-16,Arcgis,,,,,,,Requires sign-in. Unable to find open data.,80
@@ -25,12 +25,12 @@ Calabasas,CA,,,,,,,,,,No open data website found,370
 Cape Coral,FL,https://capecoral-capegis.opendata.arcgis.com/,2019-12-16,Arcgis,64,Restricted to Data,0,,,,,N/A
 Cary,NC,https://data.townofcary.org/,2019-12-16,Opendatasoft,36,,0,,,,,45
 Cedar Falls,IA,,,,,,,,,,No open data website found,90
-Chapel Hill,NC,https://www.chapelhillopendata.org/,2019-12-16,Opendatasoft,63,,9,"Past library meeting room reservations, Upcoming library meeting room locations, Library circulation by subject, Library circulation by format, Library cardholders by precinct, Library expenditures and circulation,Chapel Hill public library foot traffic,air quality,weather","FacilitiesAndGeospatial,EventsAndOutreach,Patrons,CatalogAndCirculation,Financial",2019-12-16,,N/A
-Charlotte,NC,http://data.charlottenc.gov/,2019-12-16,Arcgis,161,Restricted to Data,2,"Libraries, Library parcels",FacilitiesAndGeospatial,2019-07-03,,790
+Chapel Hill,NC,https://www.chapelhillopendata.org/,2019-12-16,Opendatasoft,63,,9,Past library meeting room reservations; Upcoming library meeting room locations; Library circulation by subject; Library circulation by format; Library cardholders by precinct; Library expenditures and circulation;Chapel Hill public library foot traffic;air quality;weather,FacilitiesAndGeospatial;EventsAndOutreach;Patrons;CatalogAndCirculation;Financial,2019-12-16,,N/A
+Charlotte,NC,http://data.charlottenc.gov/,2019-12-16,Arcgis,161,Restricted to Data,2,Libraries; Library parcels,FacilitiesAndGeospatial,2019-07-03,,790
 Charlottesville,VA,https://opendata.charlottesville.org/,2019-12-16,Arcgis,89,Restricted to Data,0,,,,,N/A
 Chattanooga,TN,https://data.chattlibrary.org/,2019-12-16,Socrata,107,Restricted to type: datasets,0,,,,,1350
-Chesapeake,VA,http://www.cityofchesapeake.net/government/city-departments/departments/Information-Technology-Department/open-data-portal.htm,2019-12-16,Other,45,,0,,,,"Contains links to library catalog and library locations, not specifically as datasets",305
-Chicago,IL,https://data.cityofchicago.org/,2019-12-16,Socrata,484,Restricted to type: datasets,58,"Library hours, Library location, Popular fiction titles, Visitors by location, Wifi usage, Circulation by location, FOIA requests, Holds placed by location, Computer sessions by location, Summer reads for adults","FacilitiesAndGeospatial,CatalogAndCirculation,Patrons,PublicRecords,EventsAndOutreach,TechnologyOfferings,",2019-12-11,,1655
+Chesapeake,VA,http://www.cityofchesapeake.net/government/city-departments/departments/Information-Technology-Department/open-data-portal.htm,2019-12-16,Other,45,,0,,,,Contains links to library catalog and library locations; not specifically as datasets,305
+Chicago,IL,https://data.cityofchicago.org/,2019-12-16,Socrata,484,Restricted to type: datasets,58,Library hours; Library location; Popular fiction titles; Visitors by location; Wifi usage; Circulation by location; FOIA requests; Holds placed by location; Computer sessions by location; Summer reads for adults,FacilitiesAndGeospatial;CatalogAndCirculation;Patrons;PublicRecords;EventsAndOutreach;TechnologyOfferings;,2019-12-11,,1655
 Cincinnati,OH,https://data.cincinnati-oh.gov/,2019-12-16,Socrata,95,Restricted to type: datasets,0,,,,,600
 Cleveland,OH,,,,,,,,,,No open data website found,625
 Colorado Springs,CO,https://data.coloradosprings.gov/,2019-12-16,Socrata,11,Restricted to type: datasets,0,,,,,N/A
@@ -39,14 +39,14 @@ Culver City,CA,https://data.culvercity.org/,2019-12-16,Socrata,19,Restricted to 
 Dallas,TX,https://www.dallasopendata.com/,2019-12-16,Socrata,92,Restricted to type: datasets,1,Library locations,FacilitiesAndGeospatial,2017-02-10,,775
 Dayton,OH,https://www.daytonohio.gov/783/Dayton-Open-Data,2019-12-16,,,,,,,,Website under construction. Receive error messages or get redirected to home page when I try and click any links.,70
 Denton,TX,http://data.cityofdenton.com/,2019-12-16,CKAN,213,,0,,,,,730
-Denver,CO,https://www.denvergov.org/opendata,2019-12-16,Other,243,,1,Library patronage and circulation,"CatalogAndCirculation,Patrons,FacilitiesAndGeospatial",2019-12-16,,815
+Denver,CO,https://www.denvergov.org/opendata,2019-12-16,Other,243,,1,Library patronage and circulation,CatalogAndCirculation;Patrons;FacilitiesAndGeospatial,2019-12-16,,815
 Detroit,MI,https://data.detroitmi.gov/,2019-12-16,Arcgis,160,Restricted to Data,1,Detroit public libraries,FacilitiesAndGeospatial,2018-12-10,,515
-Durham,NC,https://live-durhamnc.opendata.arcgis.com/,2019-12-16,Arcgis,177,Restricted to Data,24,"Circulation, Visitors, Programs, Technology usage, Children collection, DVD collection, Teen collection, Adult collection, Public meeting attendance, Spanish language usage, Adult programs, ","CatalogAndCirculation,Patrons,FacilitiesAndGeospatial,EventsAndOutreach,TechnologyOfferings,Financial",2019-12-16,,640
+Durham,NC,https://live-durhamnc.opendata.arcgis.com/,2019-12-16,Arcgis,177,Restricted to Data,24,Circulation; Visitors; Programs; Technology usage; Children collection; DVD collection; Teen collection; Adult collection; Public meeting attendance; Spanish language usage; Adult programs; ,CatalogAndCirculation;Patrons;FacilitiesAndGeospatial;EventsAndOutreach;TechnologyOfferings;Financial,2019-12-16,,640
 El Segundo,CA,,,,,,,,,,No open data website found,370
 Evanston,IL,https://data.cityofevanston.org/,2019-12-16,Socrata,166,Restricted to type: datasets,0,,,,,0
 Falls Church,VA,http://opendata-fallschurch.opendata.arcgis.com/,2019-12-16,Arcgis,30,Restricted to Data,0,,,,,290
 Fayetteville,NC,http://data.fayettevillenc.gov/,2019-12-16,Arcgis,27,,0,,,,Older version of arcgis no limiting to data,N/A
-Ferndale ,MI,http://data.ferndalemi.gov/,2019-12-16,Arcgis,653,Restricted to Data,2,"Detroit Public Libraries, Public Libraries",FacilitiesAndGeospatial,2018-12-10,,425
+Ferndale ,MI,http://data.ferndalemi.gov/,2019-12-16,Arcgis,653,Restricted to Data,2,Detroit Public Libraries; Public Libraries,FacilitiesAndGeospatial,2018-12-10,,425
 Fort Lauderdale,FL,http://data-fortlauderdale.opendata.arcgis.com/,2019-12-16,Arcgis ,97,Restricted to Data,1,Libraries-Reference data,FacilitiesAndGeospatial,2019-05-01,,595
 Gainesville,FL,https://data.cityofgainesville.org/,2019-12-16,Socrata,43,Restricted to type: datasets,0,,,,,300
 Gilbert,AZ,https://data.gilbertaz.gov/,2019-12-16,Arcgis,35,Restricted to Data,0,,,,,N/A
@@ -70,30 +70,30 @@ Lexington,KY,https://data.lexingtonky.gov/,2019-12-16,CKAN,98,,1,Libraries,Facil
 Lincoln,NE,http://opendata.lincoln.ne.gov/,2019-12-16,Arcgis,121,Restricted to Data,0,,,,,385
 Little Rock,AR,https://data.littlerock.gov/,2019-12-16,Socrata,23,Restricted to type: datasets,0,,,,,N/A
 Long Beach,CA,http://datalb.longbeach.gov/,2019-12-16,Arcgis,61,Restricted to Data,1,Libraries,FacilitiesAndGeospatial,2018-01-10,,290
-Los Angeles,CA,https://data.lacity.org/,2019-12-16,Socrata,308,Restricted to type: datasets,2,"Library Monthly Stats,Library Branches","FacilitiesAndGeospatial,Patrons,EventsAndOutreach,TechnologyOfferings,CatalogAndCirculation",2019-07-26,,1710
+Los Angeles,CA,https://data.lacity.org/,2019-12-16,Socrata,308,Restricted to type: datasets,2,Library Monthly Stats;Library Branches,FacilitiesAndGeospatial;Patrons;EventsAndOutreach;TechnologyOfferings;CatalogAndCirculation,2019-07-26,,1710
 Louisville,KY,https://data.louisvilleky.gov/,2019-12-16,DKAN,224,Restricted to type: datasets,0,,,,,1370
 Madison,WI,https://data-cityofmadison.opendata.arcgis.com/,2019-12-16,Arcgis,146,Restricted to Data,1,Libraries,FacilitiesAndGeospatial,2019-11-13,,470
 Manhattan Beach,CA,http://data-citymb.opendata.arcgis.com/,2019-12-16,Arcgis,8,,0,,,,Older version of arcgis no limiting to data,380
-Memphis ,TN,https://data.memphistn.gov/,2019-12-16,Socrata,53,Restricted to type: datasets,2,"Library program total attendance and count, Memphis public libraries shapefile","EventsAndOutreach,FacilitiesAndGeospatial",2019-12-13,,N/A
-Mesa,AZ,https://data.mesaaz.gov/,2019-12-16,Socrata,125,Restricted to type: datasets,4,"Library programs, Library materials circulation, Library computer use, Library in-house visits","EventsAndOutreach,CatalogAndCirculation,TechnologyOfferings,Patrons",2019-12-16,,1135
+Memphis ,TN,https://data.memphistn.gov/,2019-12-16,Socrata,53,Restricted to type: datasets,2,Library program total attendance and count; Memphis public libraries shapefile,EventsAndOutreach;FacilitiesAndGeospatial,2019-12-13,,N/A
+Mesa,AZ,https://data.mesaaz.gov/,2019-12-16,Socrata,125,Restricted to type: datasets,4,Library programs; Library materials circulation; Library computer use; Library in-house visits,EventsAndOutreach;CatalogAndCirculation;TechnologyOfferings;Patrons,2019-12-16,,1135
 Miami,FL,https://data.miamigov.com/,2019-12-16,Socrata,12,Restricted to type: datasets,0,,,,https://data.miamigov.com/browse?limitTo=datasets,N/A
 Milwaukee,WI,https://data.milwaukee.gov/,2019-12-16,CKAN,143,,1,Libraries,FacilitiesAndGeospatial,2019-05-30,,N/A
 Minneapolis,MN,http://opendata.minneapolismn.gov/,2019-12-16,Arcgis,144,Restricted to Data,0,,,,,235
 Naperville,IL,https://data.naperville.il.us/,2019-12-16,Socrata,83,Restricted to type: datasets,0,,,,,N/A
-Nashville,TN,https://data.nashville.gov/,2019-12-16,Socrata,99,Restricted to type: datasets,3,"Library facilities, Nashville public library - eMedia circulation, Nashville public library - physical circulation","FacilitiesAndGeospatial,CatalogAndCirculation,TechnologyOfferings",2019-10-29,,865
+Nashville,TN,https://data.nashville.gov/,2019-12-16,Socrata,99,Restricted to type: datasets,3,Library facilities; Nashville public library - eMedia circulation; Nashville public library - physical circulation,FacilitiesAndGeospatial;CatalogAndCirculation;TechnologyOfferings,2019-10-29,,865
 New Orleans,LA,https://datadriven.nola.gov/home/,,Socrata,116,,0,,,,12/16/2019 website is down,940
 New Orleans,LA,https://portal-nolagis.opendata.arcgis.com,2019-12-16,Arcgis,75,Restricted to Data,1,Public Libraries,FacilitiesAndGeospatial,2018-06-11,,940
 Newport News,VA,https://www.nnva.gov/2229/Open-Data,2019-12-16,Other,7,,0,,,,,70
-New York City,NY,https://opendata.cityofnewyork.us/,2019-12-16,Socrata,"2,031",Restricted to type: datasets,6,"Queens Library Branches, NYPL Branch services 7-2010 to 6-2011. NYPL Branch Services - Manhattan, NYPL - Branch Services - Bronx, NYPL Branch Services - Staten Island, Brooklyn PL appointments","FacilitiesAndGeospatial,EventsAndOutreach,CatalogAndCirculation,Patrons,HumanResources",2019-11-22,Board appointments categorized as human resources,1740
-Norfolk,VA,https://data.norfolk.gov/,2019-12-16,Socrata,32,Restricted to type: datasets,2,"Library Active Users Statistics, Library Circulation Statistics","Patrons,CatalogAndCirculation",2019-11-22,,325
+New York City,NY,https://opendata.cityofnewyork.us/,2019-12-16,Socrata,"2,031",Restricted to type: datasets,6,Queens Library Branches; NYPL Branch services 7-2010 to 6-2011. NYPL Branch Services - Manhattan; NYPL - Branch Services - Bronx; NYPL Branch Services - Staten Island; Brooklyn PL appointments,FacilitiesAndGeospatial;EventsAndOutreach;CatalogAndCirculation;Patrons;HumanResources,2019-11-22,Board appointments categorized as human resources,1740
+Norfolk,VA,https://data.norfolk.gov/,2019-12-16,Socrata,32,Restricted to type: datasets,2,Library Active Users Statistics; Library Circulation Statistics,Patrons;CatalogAndCirculation,2019-11-22,,325
 Northampton,MA,,,,,,,,,,no portal meeting needs of this study,N/A
 Oakland,CA,https://data.oaklandnet.com/,2019-12-16,Socrata,214,Restricted to type: datasets,1,Oakland Public Library Branch Locations and Hours,FacilitiesAndGeospatial,2015-03-16,,560
 Oklahoma City,OK,https://data.okc.gov/portal/page/start/,2019-12-16,Other,94,,0,,,,,705
 Orlando,FL,https://data.cityoforlando.net/,2019-12-16,Socrata,10,Restricted to type: datasets,0,,,,,N/A
 Pasadena,CA,http://data.cityofpasadena.net/,2019-12-16,Arcgis,102,Restricted to Data,1,Libraries,FacilitiesAndGeospatial,2017-08-23,,640
 Philadelphia,PA,https://www.opendataphilly.org/,2019-12-16,CKAN,373,,0,,,,,1595
-Phoenix,AZ,https://www.phoenixopendata.com/,2019-12-16,CKAN,34,,3,"Library hours, Library computers, Library meeting rooms","TechnologyOfferings,FacilitiesAndGeospatial",2017-09-15,datasets are missing important columns,45
-Pittsburgh,PA,https://data.wprdc.org/dataset,2019-12-16,CKAN,335,,2,"Library locations, library wi-fi usage",FacilitiesAndGeospatial,2019-10-03,"Western Pennsylvania Regional Data Center website: ""The Data Center maintains Allegheny County and the City of Pittsburgh’s open data portal, and provides a number of services to data publishers and users.""",1170
+Phoenix,AZ,https://www.phoenixopendata.com/,2019-12-16,CKAN,34,,3,Library hours; Library computers; Library meeting rooms,TechnologyOfferings;FacilitiesAndGeospatial,2017-09-15,datasets are missing important columns,45
+Pittsburgh,PA,https://data.wprdc.org/dataset,2019-12-16,CKAN,335,,2,Library locations; library wi-fi usage,FacilitiesAndGeospatial,2019-10-03,"Western Pennsylvania Regional Data Center website: ""The Data Center maintains Allegheny County and the City of Pittsburgh’s open data portal; and provides a number of services to data publishers and users.""",1170
 Poquoson,VA,,,,,,,,,,No open data website found,0
 Portland,ME,,,,,,,,,,No open data website found,0
 Portland,OR,https://gis-pdx.opendata.arcgis.com/,2019-12-16,Arcgis,232,Restricted to Data,0,,,,,710
@@ -103,17 +103,17 @@ Providence,RI,https://data.providenceri.gov/,2019-12-16,Socrata,117,Restricted t
 Raleigh,NC,http://data-ral.opendata.arcgis.com/,2019-12-16,Arcgis,181,Restricted to Data,1,Libraries,FacilitiesAndGeospatial,2019-11-04,,990
 Richmond,CA,https://opendata.ci.richmond.ca.us/,2019-12-16,Socrata,53,Restricted to type: datasets,0,,,,,N/A
 Sacramento,CA,http://data.cityofsacramento.org/,2019-12-16,Arcgis,90,Restricted to Data,0,,,,,1385
-Salinas,CA,https://cityofsalinas.opendatasoft.com/pages/homepage/,2019-12-16,Opendatasoft,60,,7,"Library Circulation, Library Computer Usage, Library Program by Age Group, Library Program Attendance by Age Group, Library Visitors, Salinas Public Libraries (Points), Libraries","CatalogAndCirculation,TechnologyOfferings,Patrons,FacilitiesAndGeospatial,EventsAndOutreach",2019-03-22,,N/A
+Salinas,CA,https://cityofsalinas.opendatasoft.com/pages/homepage/,2019-12-16,Opendatasoft,60,,7,Library Circulation; Library Computer Usage; Library Program by Age Group; Library Program Attendance by Age Group; Library Visitors; Salinas Public Libraries (Points); Libraries,CatalogAndCirculation;TechnologyOfferings;Patrons;FacilitiesAndGeospatial;EventsAndOutreach,2019-03-22,,N/A
 Salt Lake City,UT,http://gis-slcgov.opendata.arcgis.com/,2019-12-16,Arcgis,16,,0,,,,Older version of arcgis no limiting to data,1065
 San Antonio,TX,https://data.sanantonio.gov/,2019-12-16,CKAN,73,,1,Libraries,FacilitiesAndGeospatial,2019-09-18,,890
 San Diego,CA,https://data.sandiego.gov/,2019-12-16,JKAN,91,,1,Library locations,FacilitiesAndGeospatial,2019-09-17,,1550
-San Francisco,CA,https://datasf.org/opendata/,2019-12-16,Socrata,395,Restricted to type: datasets,1,Library Usage,"Patrons,CatalogAndCirculation",2019-09-05,,1845
+San Francisco,CA,https://datasf.org/opendata/,2019-12-16,Socrata,395,Restricted to type: datasets,1,Library Usage,Patrons;CatalogAndCirculation,2019-09-05,,1845
 San Jose,CA,https://data.sanjoseca.gov/,2019-12-16,CKAN,34,,1,Library - California Room Data,CatalogAndCirculation,2019-05-24,"""The California Room collects materials on California history with an emphasis on the city of San Jose and the greater Santa Clara Valley.""",920
-Santa Clarita,CA,http://data.santa-clarita.com/,2020-01-04,Arcgis,20,,2,"Santa Clarita Library circulation 2016, Santa Clarita Libraries All Data","CatalogAndCirculation,EventsAndOutreach,Patrons,TechnologyOfferings,FacilitiesAndGeospatial",2019-07-19,"Looks like one dataset was duplicated (circ 2016), only counted it once, but the data appears to be corrupted",405
+Santa Clarita,CA,http://data.santa-clarita.com/,2020-01-04,Arcgis,20,,2,Santa Clarita Library circulation 2016; Santa Clarita Libraries All Data,CatalogAndCirculation;EventsAndOutreach;Patrons;TechnologyOfferings;FacilitiesAndGeospatial,2019-07-19,Looks like one dataset was duplicated (circ 2016); only counted it once; but the data appears to be corrupted,405
 Santa Monica,CA,https://data.smgov.net/,2019-12-17,Socrata,30,Restricted to type: datasets,0,,,,,1560
 Savannah,GA,https://data-sagis.opendata.arcgis.com/,2019-12-17,Arcgis,133,Restricted to Data,1,Libraries,FacilitiesAndGeospatial,2019-10-24,Combination of county & city data,325
 Scottsdale,AZ,http://data.scottsdaleaz.gov/,2019-12-17,CKAN,46,,1,Libraries,FacilitiesAndGeospatial,2019-05-09,,N/A
-Seattle,WA,https://data.seattle.gov/,2019-12-17,Socrata,276,Restricted to type: datasets,4,"Library Collection Inventory, Integrated Library System (ILS) Data Dictionary, Checkouts By Title, Checkouts By Title (Physical Items) ",CatalogAndCirculation,2019-12-17,,1410
+Seattle,WA,https://data.seattle.gov/,2019-12-17,Socrata,276,Restricted to type: datasets,4,Library Collection Inventory; Integrated Library System (ILS) Data Dictionary; Checkouts By Title; Checkouts By Title (Physical Items) ,CatalogAndCirculation,2019-12-17,,1410
 Southbend,IN,https://data-southbend.opendata.arcgis.com/,2019-12-17,Arcgis,63,Restricted to Data,0,,,,,N/A
 Spartanburg,SC,,,,,,,,,,No open data website found,0
 St. Cloud,MN,,,,,,,,,,No open data website found,N/A
