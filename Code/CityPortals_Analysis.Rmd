@@ -9,7 +9,7 @@ output:
 ```{r}
 # Load relevant libraries
 library(dplyr)
-library(Hmisc)
+#library(Hmisc)
 #library(summarytools)
 library(tidyr)
 library(splitstackshape)
@@ -17,6 +17,7 @@ library(httr)
 ```
 
 ```{r}
+# retrieve token needed to access data in private github repository
 token <- read.delim("~/Google Drive File Stream/My Drive/Keys/g_access.txt", stringsAsFactor = FALSE, header = FALSE)
 ```
 
@@ -35,10 +36,17 @@ imls <- content(x, type="text/csv", encoding = "UTF-8")
 ```
 
 ```{r}
+# Read in OKFN Open Data Scores data stored in private github repository
+#url=paste0("https://raw.githubusercontent.com/OpenDataLiteracy/JCDL-Extended/master/Data/2020-01-16_Download_OpenDataCensusScores.csv")
+#x=GET(url, add_headers(Authorization = paste("token", token, sep = " ")))
+#census_scores <- content(x, type="text/csv", encoding = "UTF-8")
+```
+
+```{r}
 # Read in IMLS data stored in private github repository
-url=paste0("https://raw.githubusercontent.com/OpenDataLiteracy/JCDL-Extended/master/Data/PLS_FY17_Outlet_pud17i.csv")
-x=GET(url, add_headers(Authorization = paste("token", token, sep = " ")))
-imls_outlet <- content(x, type="text/csv", encoding = "UTF-8")
+#url=paste0("https://raw.githubusercontent.com/OpenDataLiteracy/JCDL-Extended/master/Data/PLS_FY17_Outlet_pud17i.csv")
+#x=GET(url, add_headers(Authorization = paste("token", token, sep = " ")))
+#imls_outlet <- content(x, type="text/csv", encoding = "UTF-8")
 ```
 
 ```{r}
@@ -52,7 +60,7 @@ portals$Portal_URL <- as.character(portals$Portal_URL)
 ```
 
 ```{r}
-# Split into individual categories and create dummy variables.
+# Split categories into individual categories based on comma dileaneation, then create dummy variables.
 portals <- cSplit_e(portals, split.col = "LibraryDataCategories", sep = ",", type = "character", 
          mode = "binary", fixed = TRUE, fill = 0)
 ```
@@ -60,6 +68,10 @@ portals <- cSplit_e(portals, split.col = "LibraryDataCategories", sep = ",", typ
 ```{r}
 # Calculate (and add column) the percentage of the city portal data that is public library related
 portals$ProportionPublicLibData <- portals$CountVettedPublicLibData / portals$TotalDataSetsAvailable
+```
+
+```{r}
+#write.csv(portals, "~/Documents/Github/JCDL-Extended/Data/CityPortals_CategoryDummies")
 ```
 
 ```{r} 
@@ -73,11 +85,11 @@ imls <- imls %>%
               STABR = tolower(STABR))
 
 # Merge datasets on city, state
-temp <- merge(portals, imls, by.x = c("City", "State"), by.y = c("CITY", "STABR"), all.x = TRUE)
+merged <- merge(portals, imls, by.x = c("City", "State"), by.y = c("CITY", "STABR"), all.x = TRUE)
 ```
 
 ```{r}
-merged <- merge(temp, imls_outlet, by = "LIBNAME", all.x = TRUE)
+#merged <- merge(temp, imls_outlet, by = "LIBNAME", all.x = TRUE)
 ```
 
 ```{r}
@@ -95,82 +107,131 @@ unique(merged$Software)
 
 ```{r}
 # See what values we have for Locale
-unique(merged$LOCALE)
+unique(merged$GEOCODE)
 ```
 
 ```{r}
-# Create a LocaleDescr column and fill based on condition
+# See what values we have for Locale
+unique(merged$LOCALE_ADD)
+```
+
+```{r}
+# See what values we have for Locale
+unique(merged$LOCALE_MOD)
+```
+
+Definitions of LOCALE features see PLS Data File Documentation (https://www.imls.gov/sites/default/files/fy2017_pls_data_file_documentation.pdf) page 23
+
+```{r}
+# Create a Description column for both LOCALE_ADD and LOCALE_MOD and fill based on condition
 merged <- merged %>% 
-    mutate(LocaleDescr = case_when(
-                LOCALE == 11 ~ "City Large",
-                LOCALE == 12 ~ "City Midsize",
-                LOCALE == 13 ~ "City Small",
-                LOCALE == 21 ~ "Suburban Large",
-                LOCALE == 22 ~ "Suburban Midsize",
-                LOCALE == 23 ~ "Suburban Small",
-                LOCALE == 31 ~ "Town Fringe",
-                LOCALE == 32 ~ "Town Distant",
-                LOCALE == 33 ~ "Town Remote",
-                LOCALE == 41 ~ "Rural Fringe",
-                LOCALE == 42 ~ "Rural Distant",
-                LOCALE == 43 ~ "Rural Remote"
-))
+    mutate(LOCALE_ADD_DESCR = case_when(
+                LOCALE_ADD == 11 ~ "City Large",
+                LOCALE_ADD == 12 ~ "City Midsize",
+                LOCALE_ADD == 13 ~ "City Small",
+                LOCALE_ADD == 21 ~ "Suburban Large",
+                LOCALE_ADD == 22 ~ "Suburban Midsize",
+                LOCALE_ADD == 23 ~ "Suburban Small",
+                LOCALE_ADD == 31 ~ "Town Fringe",
+                LOCALE_ADD == 32 ~ "Town Distant",
+                LOCALE_ADD == 33 ~ "Town Remote",
+                LOCALE_ADD == 41 ~ "Rural Fringe",
+                LOCALE_ADD == 42 ~ "Rural Distant",
+                LOCALE_ADD == 43 ~ "Rural Remote"),
+           LOCALE_MOD_DESCR = case_when(
+                LOCALE_MOD == 11 ~ "City Large",
+                LOCALE_MOD == 12 ~ "City Midsize",
+                LOCALE_MOD == 13 ~ "City Small",
+                LOCALE_MOD == 21 ~ "Suburban Large",
+                LOCALE_MOD == 22 ~ "Suburban Midsize",
+                LOCALE_MOD == 23 ~ "Suburban Small",
+                LOCALE_MOD == 31 ~ "Town Fringe",
+                LOCALE_MOD == 32 ~ "Town Distant",
+                LOCALE_MOD == 33 ~ "Town Remote",
+                LOCALE_MOD == 41 ~ "Rural Fringe",
+                LOCALE_MOD == 42 ~ "Rural Distant",
+                LOCALE_MOD == 43 ~ "Rural Remote")
+           )
+```
+
+```{r}
+# Change datatype of LOCALE DESCRs
+merged$LOCALE_ADD_DESCR <- as.factor(merged$LOCALE_ADD_DESCR)
+merged$LOCALE_MOD_DESCR <- as.factor(merged$LOCALE_MOD_DESCR)
+
+```
+
+```{r}
+merged %>%
+  count(City, State, sort = T) %>%
+  filter(n > 1)
 ```
 
 
 ```{r}
-# Change datatype of LocaleDescr
-merged$LocaleDescr <- as.factor(merged$LocaleDescr)
+# Count how many library systems are included in the individual cities add colum to dataframe
+merged <- merged %>%
+  add_count(City, State, name = "CountLibSysinCity")
 ```
+
+```{r}
+merged %>%
+  filter(CountLibSysinCity > 1) %>%
+  write.csv("~/Documents/Github/JCDL-Extended/Data/Cities_with_multiple_library_systems")
+```
+
+
 
 ```{r}
 # Uncomment this to view a nice table of descriptive stats in the Viewer
-#view(dfSummary(jcdl))
+#summarytools::view(summarytools::dfSummary(merged))
 ```
 
 ```{r}
 # Uncomment for descriptive stats
-#Hmisc::describe(jcdl)
+#Hmisc::describe(merged)
 ```
 
 ```{r}
 # Simple linear regression model
-jcdl_PropLR <- lm(ProportionPublicLibData ~ OpenDataCensusScores, data=jcdl)
-summary(jcdl_PropLR)
+merged_PropLR <- lm(ProportionPublicLibData ~ OpenDataCensusScores, data=merged)
+summary(merged_PropLR)
 ```
 
 ```{r}
 # Simple linear regression model
-jcdl_VettLR <- lm(CountVettedPublicLibData ~ OpenDataCensusScores, data=jcdl)
-summary(jcdl_VettLR)
+merged_VettLR <- lm(CountVettedPublicLibData ~ OpenDataCensusScores, data=merged)
+summary(merged_VettLR)
 ```
 
 ```{r}
 # Simple linear regression model
-jcdl_TotLR <- lm(TotalDatasetsAvailable ~ OpenDataCensusScores, data=jcdl)
-summary(jcdl_TotLR)
+merged_TotLR <- lm(TotalDatasetsAvailable ~ OpenDataCensusScores, data=merged)
+summary(merged_TotLR)
 ```
 
 ```{r}
 # Simple linear regression model
-jcdl_PropSizeLR <- lm(ProportionPublicLibData ~ LocaleDescr, data=jcdl)
-summary(jcdl_PropSizeLR)
+merged_PropSizeLR <- lm(ProportionPublicLibData ~ LOCALE_ADD_DESCR, data=merged)
+summary(merged_PropSizeLR)
 ```
 
 ```{r}
 # Simple linear regression model
-jcdl_VettSizeLR <- lm(CountVettedPublicLibData ~ LocaleDescr, data=jcdl)
-summary(jcdl_VettSizeLR)
+merged_VettSizeLR <- lm(CountVettedPublicLibData ~ LOCALE_ADD_DESCR, data=merged)
+summary(merged_VettSizeLR)
 ```
 
 ```{r}
 # Simple linear regression model
-jcdl_TotSizeLR <- lm(TotalDatasetsAvailable ~ LocaleDescr, data=jcdl)
-summary(jcdl_TotSizeLR)
+merged_TotSizeLR <- lm(TotalDataSetsAvailable ~ LOCALE_ADD_DESCR, data=merged)
+summary(merged_TotSizeLR)
 ```
+
+
 ```{r}
 # Simple linear regression model
-jcdl_TotRevCityLR <- lm(TotalDatasetsAvailable ~ TotalRevenue, data=jcdl)
+jcdl_TotRevCityLR <- lm(TotalDataSetsAvailable ~ TotalRevenue, data=jcdl)
 summary(jcdl_TotRevCityLR)
 ```
 
