@@ -70,7 +70,7 @@ Lexington,KY,https://data.lexingtonky.gov/,2019-12-16,CKAN,98,,1,Libraries,Facil
 Lincoln,NE,http://opendata.lincoln.ne.gov/,2019-12-16,Arcgis,121,Restricted to Data,0,,,,,385
 Little Rock,AR,https://data.littlerock.gov/,2019-12-16,Socrata,23,Restricted to type: datasets,0,,,,,N/A
 Long Beach,CA,http://datalb.longbeach.gov/,2019-12-16,Arcgis,61,Restricted to Data,1,Libraries,FacilitiesAndGeospatial,2018-01-10,,290
-Los Angeles,CA,https://data.lacity.org/,2019-12-16,Socrata,308,Restricted to type: datasets,2,"Library Monthly Stats,Library Branches","FacilitiesAndGeopspatial,Patrons,EventsAndOutreach,Technology Offerings,CatalogAndCirculation",2019-07-26,,1710
+Los Angeles,CA,https://data.lacity.org/,2019-12-16,Socrata,308,Restricted to type: datasets,2,"Library Monthly Stats,Library Branches","FacilitiesAndGeospatial,Patrons,EventsAndOutreach,Technology Offerings,CatalogAndCirculation",2019-07-26,,1710
 Louisville,KY,https://data.louisvilleky.gov/,2019-12-16,DKAN,224,Restricted to type: datasets,0,,,,,1370
 Madison,WI,https://data-cityofmadison.opendata.arcgis.com/,2019-12-16,Arcgis,146,Restricted to Data,1,Libraries,FacilitiesAndGeospatial,2019-11-13,,470
 Manhattan Beach,CA,http://data-citymb.opendata.arcgis.com/,2019-12-16,Arcgis,8,,0,,,,Older version of arcgis no limiting to data,380

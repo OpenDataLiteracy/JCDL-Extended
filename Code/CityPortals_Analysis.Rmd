@@ -50,13 +50,15 @@ imls <- content(x, type="text/csv", encoding = "UTF-8")
 ```
 
 ```{r}
-# Removed random additional column in portals dataset
-portals <- portals %>% select(-X13)
 # Fix date formats
 portals$DateLibDataLastUpdated <- as.Date(portals$DateLibDataLastUpdated, format = "%Y-%m-%d")
 portals$DatePortalAccessed <- as.Date(portals$DatePortalAccessed, format = "%Y-%m-%d")
 # Variables to datatype character
 portals$Portal_URL <- as.character(portals$Portal_URL)
+# Replace N/A with na
+portals$OpenDataCensusScore2017 <- ifelse(portals$OpenDataCensusScore2017 != "N/A", portals$OpenDataCensusScore2017, NA)
+# Variable to numeric
+portals$OpenDataCensusScore2017 <- as.numeric(portals$OpenDataCensusScore2017)
 ```
 
 ```{r}
@@ -175,11 +177,16 @@ merged <- merged %>%
 ```
 
 ```{r}
-merged %>%
-  filter(CountLibSysinCity > 1) %>%
-  write.csv("~/Documents/Github/JCDL-Extended/Data/Cities_with_multiple_library_systems")
+multi_libs <- merged %>%
+  filter(CountLibSysinCity > 1)
+
+write.csv(multi_libs, "~/Documents/Github/JCDL-Extended/Data/Cities_with_multiple_library_systems")
 ```
 
+```{r}
+single_libs <- merged %>%
+  filter(CountLibSysinCity == 1)
+```
 
 
 ```{r}
@@ -194,8 +201,8 @@ merged %>%
 
 ```{r}
 # Simple linear regression model
-merged_PropLR <- lm(ProportionPublicLibData ~ OpenDataCensusScores, data=merged)
-summary(merged_PropLR)
+single_libs_PropLR <- lm(ProportionPublicLibData ~ OpenDataCensusScore2017, data=single_libs)
+summary(single_libs_PropLR)
 ```
 
 ```{r}
