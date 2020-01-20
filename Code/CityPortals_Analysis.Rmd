@@ -24,9 +24,9 @@ token <- read.delim("~/Google Drive File Stream/My Drive/Keys/g_access.txt", str
 
 ```{r}
 # Read in portals data stored in private github repository
-url=paste0("https://raw.githubusercontent.com/OpenDataLiteracy/JCDL-Extended/master/Data/KAS_JCDL_PrelimClean_2019-12-16.csv")
+url=paste0("https://raw.githubusercontent.com/OpenDataLiteracy/JCDL-Extended/master/Data/KAS_JCDL_PrelimClean_2019-12-16.txt")
 x=GET(url, add_headers(Authorization = paste("token", token, sep = " ")))
-portals <- content(x, type="text/csv", encoding = "UTF-8")
+portals <- content(x, type="text/tab-separated-values", encoding = "UTF-8")
 ```
 
 ```{r}
@@ -64,7 +64,7 @@ portals$OpenDataCensusScore2017 <- as.numeric(portals$OpenDataCensusScore2017)
 
 ```{r}
 # Split categories into individual categories based on comma dileaneation, then create dummy variables.
-portals <- cSplit_e(portals, split.col = "LibraryDataCategories", sep = ",", type = "character", 
+portals <- cSplit_e(portals, split.col = "LibraryDataCategories", sep = ";", type = "character", 
          mode = "binary", fixed = TRUE, fill = 0)
 ```
 
@@ -279,7 +279,8 @@ for(i in names(single_libs))
 { 
     if(is.numeric(single_libs[,i]))  ##if column is numeric run regression
     {       
-       fit <- lm(ProportionPublicLibData ~ single_libs[,i], data=single_libs) 
+      print(single_libs[,i])
+      fit <- lm(ProportionPublicLibData ~ single_libs[,i], data=single_libs) 
        coeff <- summary(fit)$coefficients[,4][2] #output only the p-values
        writeLines(paste(coeff,i,"\n"))
     }
@@ -291,12 +292,15 @@ for(i in names(single_libs))
 # possible numeric columns
 
 # Adapted from https://stackoverflow.com/questions/30583917/regression-loop-in-r-for-data-frames
+x <- names(single_libs)
 
-for(i in names(single_libs))
-{ 
-    if(is.numeric(single_libs[,i]))  ##if column is numeric run regression
+for(i in x)
+{ print(i)
+  print(class(single_libs[i]))
+  print(typeof(single_libs[i]))
+  if(is.numeric(single_libs[i]))  ##if column is numeric run regression
     {       
-       fit <- lm(CountVettedPublicLibData ~ single_libs[,i], data=single_libs) 
+       fit <- lm(CountVettedPublicLibData ~ single_libs[i], data=single_libs) 
        coeff <- summary(fit)$coefficients[,4][2] #output only the p-values
        writeLines(paste(coeff,i,"\n"))
     }
@@ -425,3 +429,8 @@ single_libs %>%
   select(City, OpenDataCensusScore2017) %>%
   arrange(desc(OpenDataCensusScore2017))
 ```
+
+```{r}
+skimr::skim(single_libs)
+```
+
