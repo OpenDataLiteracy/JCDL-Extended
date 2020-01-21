@@ -27,6 +27,7 @@ token <- read.delim("~/Google Drive File Stream/My Drive/Keys/g_access.txt", str
 url=paste0("https://raw.githubusercontent.com/OpenDataLiteracy/JCDL-Extended/master/Data/KAS_JCDL_PrelimClean_2019-12-16.txt")
 x=GET(url, add_headers(Authorization = paste("token", token, sep = " ")))
 portals <- content(x, type="text/tab-separated-values", encoding = "UTF-8")
+as.data.frame(portals)
 ```
 
 ```{r}
@@ -34,6 +35,7 @@ portals <- content(x, type="text/tab-separated-values", encoding = "UTF-8")
 url=paste0("https://raw.githubusercontent.com/OpenDataLiteracy/JCDL-Extended/master/Data/IMLS_Data_PLS_FY17_AE_pud17i.csv")
 x=GET(url, add_headers(Authorization = paste("token", token, sep = " ")))
 imls <- content(x, type="text/csv", encoding = "UTF-8")
+as.data.frame(imls)
 ```
 
 ```{r}
@@ -274,15 +276,17 @@ cor(x, use = "complete.obs")
 # possible numeric columns
 
 # Adapted from https://stackoverflow.com/questions/30583917/regression-loop-in-r-for-data-frames
+# Also indexing tibbles is weird - hence the double brackets. See https://twitter.com/kara_woo/status/1218297608289996800
 
-for(i in names(single_libs))
+x <- names(single_libs)
+
+for(i in x)
 { 
-    if(is.numeric(single_libs[,i]))  ##if column is numeric run regression
-    {       
-      print(single_libs[,i])
-      fit <- lm(ProportionPublicLibData ~ single_libs[,i], data=single_libs) 
-       coeff <- summary(fit)$coefficients[,4][2] #output only the p-values
-       writeLines(paste(coeff,i,"\n"))
+    if(is.numeric(single_libs[[i]]))  ##if column is numeric run regression
+    {
+      fit <- lm(ProportionPublicLibData ~ single_libs[[i]], data=single_libs) 
+      coeff <- summary(fit)$coefficients[,4][2] #output only the p-values
+      writeLines(paste(coeff,i,"\n"))
     }
 }
 ```
@@ -292,15 +296,13 @@ for(i in names(single_libs))
 # possible numeric columns
 
 # Adapted from https://stackoverflow.com/questions/30583917/regression-loop-in-r-for-data-frames
-x <- names(single_libs)
+# Also indexing tibbles is weird - hence the double brackets. See https://twitter.com/kara_woo/status/1218297608289996800
 
 for(i in x)
-{ print(i)
-  print(class(single_libs[i]))
-  print(typeof(single_libs[i]))
-  if(is.numeric(single_libs[i]))  ##if column is numeric run regression
+{ 
+  if(is.numeric(single_libs[[i]]))  ##if column is numeric run regression
     {       
-       fit <- lm(CountVettedPublicLibData ~ single_libs[i], data=single_libs) 
+       fit <- lm(CountVettedPublicLibData ~ single_libs[[i]], data=single_libs) 
        coeff <- summary(fit)$coefficients[,4][2] #output only the p-values
        writeLines(paste(coeff,i,"\n"))
     }
