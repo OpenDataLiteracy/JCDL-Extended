@@ -7,14 +7,17 @@ output:
 ---
 
 ```{r}
+options(scipen=999)
+```
+
+```{r}
 # Load relevant libraries
 library(dplyr)
-#library(Hmisc)
-#library(summarytools)
 library(tidyr)
 library(splitstackshape)
 library(httr)
 library(ggplot2)
+library(visdat)
 ```
 
 ```{r}
@@ -39,20 +42,6 @@ as.data.frame(imls)
 ```
 
 ```{r}
-# Read in OKFN Open Data Scores data stored in private github repository
-#url=paste0("https://raw.githubusercontent.com/OpenDataLiteracy/JCDL-Extended/master/Data/2020-01-16_Download_OpenDataCensusScores.csv")
-#x=GET(url, add_headers(Authorization = paste("token", token, sep = " ")))
-#census_scores <- content(x, type="text/csv", encoding = "UTF-8")
-```
-
-```{r}
-# Read in IMLS data stored in private github repository
-#url=paste0("https://raw.githubusercontent.com/OpenDataLiteracy/JCDL-Extended/master/Data/PLS_FY17_Outlet_pud17i.csv")
-#x=GET(url, add_headers(Authorization = paste("token", token, sep = " ")))
-#imls_outlet <- content(x, type="text/csv", encoding = "UTF-8")
-```
-
-```{r}
 # Fix date formats
 portals$DateLibDataLastUpdated <- as.Date(portals$DateLibDataLastUpdated, format = "%Y-%m-%d")
 portals$DatePortalAccessed <- as.Date(portals$DatePortalAccessed, format = "%Y-%m-%d")
@@ -60,7 +49,7 @@ portals$DatePortalAccessed <- as.Date(portals$DatePortalAccessed, format = "%Y-%
 portals$Portal_URL <- as.character(portals$Portal_URL)
 # Replace N/A with na
 portals$OpenDataCensusScore2017 <- ifelse(portals$OpenDataCensusScore2017 != "N/A", portals$OpenDataCensusScore2017, NA)
-# Variable to numeric
+# Variables to numeric
 portals$OpenDataCensusScore2017 <- as.numeric(portals$OpenDataCensusScore2017)
 ```
 
@@ -91,18 +80,6 @@ imls <- imls %>%
 
 # Merge datasets on city, state
 merged <- merge(portals, imls, by.x = c("City", "State"), by.y = c("CITY", "STABR"), all.x = TRUE)
-```
-
-```{r}
-#merged <- merge(temp, imls_outlet, by = "LIBNAME", all.x = TRUE)
-```
-
-```{r}
-# Variables to datatype factor
-# jcdl$Locale <- as.factor(jcdl$Locale)
-# jcdl$ReportingStatus <- as.factor(jcdl$ReportingStatus)
-# jcdl$MailingZip <- as.factor(jcdl$MailingZip)
-# jcdl$Year <- as.factor(jcdl$Year)
 ```
 
 ```{r}
@@ -191,16 +168,10 @@ single_libs <- merged %>%
   filter(CountLibSysinCity == 1)
 ```
 
-
 ```{r}
-# Uncomment this to view a nice table of descriptive stats in the Viewer
-#summarytools::view(summarytools::dfSummary(merged))
+visdat::vis_miss(single_libs[1:10])
 ```
 
-```{r}
-# Uncomment for descriptive stats
-#Hmisc::describe(merged)
-```
 
 ```{r}
 # Simple linear regression model
@@ -286,7 +257,8 @@ for(i in x)
     {
       fit <- lm(ProportionPublicLibData ~ single_libs[[i]], data=single_libs) 
       coeff <- summary(fit)$coefficients[,4][2] #output only the p-values
-      writeLines(paste(coeff,i,"\n"))
+      rsq <- summary(fit)$r.squared
+      writeLines(paste(coeff,i,rsq,"\n"))
     }
 }
 ```
@@ -304,7 +276,8 @@ for(i in x)
     {       
        fit <- lm(CountVettedPublicLibData ~ single_libs[[i]], data=single_libs) 
        coeff <- summary(fit)$coefficients[,4][2] #output only the p-values
-       writeLines(paste(coeff,i,"\n"))
+       rsq <- summary(fit)$r.squared
+       writeLines(paste(coeff,i,rsq,"\n"))
     }
 }
 ```
