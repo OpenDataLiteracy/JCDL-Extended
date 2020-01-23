@@ -34,12 +34,14 @@ as.data.frame(portals)
 ```
 
 ```{r}
-# Read in IMLS data stored in private github repository
+# Read in IMLS Administrative Entities data stored in private github repository
 url=paste0("https://raw.githubusercontent.com/OpenDataLiteracy/JCDL-Extended/master/Data/IMLS_Data_PLS_FY17_AE_pud17i.csv")
 x=GET(url, add_headers(Authorization = paste("token", token, sep = " ")))
 imls <- content(x, type="text/csv", encoding = "UTF-8")
 as.data.frame(imls)
 ```
+
+**AE** refers to **administrative entity**: "the agency that is legally established under local or state law to provide public library service to the population of a local jurisdiction. [In the PLS] the terms **public library** and **public library system** mean an AE. The AE may have a single outlet or multiple outlets." 
 
 ```{r}
 # Fix date formats
@@ -65,6 +67,20 @@ portals$ProportionPublicLibData <- portals$CountVettedPublicLibData / portals$To
 ```
 
 ```{r}
+# Count how many portals are included in the individual cities add colum to dataframe
+portals <- portals %>%
+  add_count(City, State, name = "CountPortalsinCity")
+```
+
+```{r}
+# Which cities have more than one portal?
+portals %>%
+  filter(CountPortalsinCity > 1)
+```
+
+New Orleans is the only city in the dataset that has more than one portal for the city.
+
+```{r}
 #write.csv(portals, "~/Documents/Github/JCDL-Extended/Data/CityPortals_CategoryDummies")
 ```
 
@@ -88,21 +104,28 @@ unique(merged$Software)
 ```
 
 ```{r}
-# See what values we have for Locale
+# See what values we have for geocodes
 unique(merged$GEOCODE)
 ```
 
 ```{r}
-# See what values we have for Locale
+# See what values we have for Locale_add
 unique(merged$LOCALE_ADD)
 ```
 
 ```{r}
-# See what values we have for Locale
+# See what values we have for Locale_mod
 unique(merged$LOCALE_MOD)
 ```
 
-Definitions of LOCALE features see PLS Data File Documentation (https://www.imls.gov/sites/default/files/fy2017_pls_data_file_documentation.pdf) page 23
+Definitions of LOCALE features see PLS Data File Documentation (https://www.imls.gov/sites/default/files/fy2017_pls_data_file_documentation.pdf) page 23 reproduced below:
+
+Locale codes allow users to identify whether AEs and library outlets are in cities, suburbs, towns, or rural areas. Locale codes were assigned to AEs and outlets using the 2017 NCES locale framework. Locale codes for AEs were assigned using two methodologies:
+
+1. Based on geocoded latitude and longitude values of the AE's street addresses
+2. Based on the modal locale codes of the central and branch libraries of that library system (excluding bookmobile and books-by-mail-only outlets). Whenever there was a tie in modal code, the AE retained its prior year locale code, if that code was among the tied values. If the tie involved locale codes that were different from the locale code corresponding to the AE's prior locale copde, the most urban code of the ties locale codes was assigned to that AE.
+
+Locale codes for outlets were assigned based on geocoded latitude and longitude of the outlet's street address.
 
 ```{r}
 # Create a Description column for both LOCALE_ADD and LOCALE_MOD and fill based on condition
@@ -140,35 +163,41 @@ merged <- merged %>%
 # Change datatype of LOCALE DESCRs
 merged$LOCALE_ADD_DESCR <- as.factor(merged$LOCALE_ADD_DESCR)
 merged$LOCALE_MOD_DESCR <- as.factor(merged$LOCALE_MOD_DESCR)
-
 ```
 
 ```{r}
+# Find out which cities have more than one AE  
 merged %>%
-  count(City, State, sort = T) %>%
+  count(City, State, Portal_URL, sort = T) %>%
+  #Portal_URL is used to differentiate cities that have multiple data portals but only one library system
   filter(n > 1)
 ```
 
+16 cities have more than one library system. New Orleans is not included in these results but has two rows in the data because it has two city data portals.
 
 ```{r}
-# Count how many library systems are included in the individual cities add colum to dataframe
+# Count how many AEs are included in the individual cities add colum to dataframe
 merged <- merged %>%
-  add_count(City, State, name = "CountLibSysinCity")
+  add_count(City, State, Portal_URL, name = "CountAEinCity") 
+#Portal_URL is used to differentiate cities that have multiple data portals but only one library system
 ```
 
 ```{r}
+# Create a separate dataframe for those with multiple AEs
 multi_libs <- merged %>%
-  filter(CountLibSysinCity > 1)
+  filter(CountAEinCity > 1)
 
-write.csv(multi_libs, "~/Documents/Github/JCDL-Extended/Data/Cities_with_multiple_library_systems")
+write.csv(multi_libs, "~/Documents/Github/JCDL-Extended/Data/Cities_with_multiple_admin_entities")
 ```
 
 ```{r}
+# Create a separate dataframe for those with only one AE
 single_libs <- merged %>%
-  filter(CountLibSysinCity == 1)
+  filter(CountAEinCity == 1)
 ```
 
 ```{r}
+# Use this code to visualize missing data (probably best at 10 columns at a time)
 visdat::vis_miss(single_libs[1:10])
 ```
 
@@ -179,11 +208,29 @@ single_libs_PropLR <- lm(ProportionPublicLibData ~ OpenDataCensusScore2017, data
 summary(single_libs_PropLR)
 ```
 
+There doesn't appear to be a strong relationship between the proportion of data in a city portal that is library data and the Open Data Census score from 2017.
+
 ```{r}
 # Simple linear regression model
 single_libs_VettLR <- lm(CountVettedPublicLibData ~ OpenDataCensusScore2017, data=single_libs)
 summary(single_libs_VettLR)
 ```
+
+There may be a positive relationship between number of library datasets available in a city portal and the Open Data Census score from 2017 but it's not a great fit. 
+
+```{r}
+plot(single_libs_VettLR)
+```
+
+Could try log of Count because it's heavily right-skewed:
+
+```{r}
+# Simple linear regression model
+single_libs_VettLR_log <- lm(log(CountVettedPublicLibData + 0.0000001) ~ OpenDataCensusScore2017, data=single_libs)
+summary(single_libs_VettLR_log)
+```
+
+Now it appears that there is not a relationship between the two variables.
 
 ```{r}
 # Simple linear regression model
@@ -191,11 +238,27 @@ single_libs_TotLR <- lm(TotalDataSetsAvailable ~ OpenDataCensusScore2017, data=s
 summary(single_libs_TotLR)
 ```
 
+Now we see a statistically significant relationship between the total number of datasets available in a city portal and the Open Data Census score from 2017. The R-squared isn't great so we can check the residuals and qq plot. But a positive relationship between these two variables would not be surprising.
+
+```{r}
+plot(single_libs_TotLR)
+```
+
+```{r}
+single_libs %>% 
+  ggplot(aes(TotalDataSetsAvailable, OpenDataCensusScore2017)) +
+  geom_point()
+
+```
+
+
 ```{r}
 # Simple linear regression model
 single_libs_PropSizeLR <- lm(ProportionPublicLibData ~ LOCALE_ADD_DESCR, data=single_libs)
 summary(single_libs_PropSizeLR)
 ```
+
+There doesn't appear to be a relationship between the proportion of data in a city portal that is library data and the Open Data Census score from 2017.
 
 ```{r}
 # Simple linear regression model
