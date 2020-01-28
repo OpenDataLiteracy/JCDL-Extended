@@ -56,6 +56,12 @@ portals$OpenDataCensusScore2017 <- as.numeric(portals$OpenDataCensusScore2017)
 ```
 
 ```{r}
+# Remove pittsburgh from dataset - the portal is not limited to the city of pittsburgh
+portals <- portals %>%
+  filter(City != "Pittsburgh")
+```
+
+```{r}
 # Split categories into individual categories based on comma dileaneation, then create dummy variables.
 portals <- cSplit_e(portals, split.col = "LibraryDataCategories", sep = ";", type = "character", 
          mode = "binary", fixed = TRUE, fill = 0)
@@ -97,6 +103,43 @@ imls <- imls %>%
 # Merge datasets on city, state
 merged <- merge(portals, imls, by.x = c("City", "State"), by.y = c("CITY", "STABR"), all.x = TRUE)
 ```
+
+```{r}
+#reference: https://stackoverflow.com/a/58653393/5593458
+portals %>%
+  group_by(City, State) %>%
+  summarise(Total_CountVettedPublicLibData = sum(CountVettedPublicLibData)) %>%
+  tidyr::unite(CityState, City, State, sep = " ", remove = F, na.rm = F)
+```
+
+
+```{r}
+portals %>%
+  group_by(City, State) %>%
+  summarise(Total_CountVettedPublicLibData = sum(CountVettedPublicLibData)) %>%
+  tidyr::unite(CityState, City, State, sep = " ", remove = F, na.rm = F) %>%
+  ggplot(aes(CityState, Total_CountVettedPublicLibData)) +
+    geom_bar(stat="identity", fill="steelblue") +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.4, size = 4)) +
+    xlab("City") +
+    ylab("Datasets Available") 
+ggsave("~/Documents/Github/JCDL-Extended/Images/cities_barchart.png")
+```
+
+```{r}
+portals %>%
+  group_by(City, State) %>%
+  summarise(Total_CountVettedPublicLibData = sum(CountVettedPublicLibData)) %>%
+  tidyr::unite(CityState, City, State, sep = " ", remove = F, na.rm = F) %>%
+  ggplot(aes(reorder(CityState, -Total_CountVettedPublicLibData), Total_CountVettedPublicLibData)) +
+    geom_bar(stat="identity", fill="steelblue") +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.4, size = 4)) +
+    geom_text(aes(label=Total_CountVettedPublicLibData), vjust=-0.4, color="black", size=2) +
+    xlab("City") +
+    ylab("Datasets Available") 
+ggsave("~/Documents/Github/JCDL-Extended/Images/cities_barchart_sorted.png")
+```
+
 
 ```{r}
 # Check unique values
@@ -258,7 +301,7 @@ single_libs_PropSizeLR <- lm(ProportionPublicLibData ~ LOCALE_ADD_DESCR, data=si
 summary(single_libs_PropSizeLR)
 ```
 
-There doesn't appear to be a relationship between the proportion of data in a city portal that is library data and the Open Data Census score from 2017.
+There doesn't appear to be a relationship between the proportion of public library data in a city portal and the Locale code.
 
 ```{r}
 # Simple linear regression model
@@ -266,12 +309,15 @@ single_libs_VettSizeLR <- lm(CountVettedPublicLibData ~ LOCALE_ADD_DESCR, data=s
 summary(single_libs_VettSizeLR)
 ```
 
+There doesn't appear to be a relationship between the count of public library data in a city portal and the Locale code.
+
 ```{r}
 # Simple linear regression model
 single_libs_TotSizeLR <- lm(TotalDataSetsAvailable ~ LOCALE_ADD_DESCR, data=single_libs)
 summary(single_libs_TotSizeLR)
 ```
 
+There doesn't appear to be a relationship between the count of total datasets in a city portal and the Locale code.
 
 ```{r}
 # Simple linear regression model total datasets avail and total operating revenue
@@ -279,6 +325,31 @@ single_libs_TotRevCityLR <- lm(TotalDataSetsAvailable ~ TOTINCM, data=single_lib
 summary(single_libs_TotRevCityLR)
 ```
 
+Here we have a statistically significant relationship between the total number of datasets available in a city portal and the Total Operating Revenue (sum of LOCGVT, STGVT, FEDGVT, and OTHINCM). The R-squared isn't great so we can check the residuals and qq plot.
+
+```{r}
+plot(single_libs_TotRevCityLR)
+```
+
+```{r}
+single_libs %>% 
+  ggplot(aes(TotalDataSetsAvailable, TOTINCM)) +
+  geom_point() +
+  scale_x_log10() +
+  scale_y_log10() 
+```
+
+```{r}
+# Simple linear regression model total datasets avail and total operating revenue
+single_libs_TotRevCityLR_log <- lm(log10(TotalDataSetsAvailable + 0.0000001) ~ log10(TOTINCM + 0.0000001), data=single_libs)
+summary(single_libs_TotRevCityLR_log)
+```
+
+```{r}
+plot(single_libs_TotRevCityLR_log)
+```
+
+There's a much stronger relationship between the logged values of total datasets and income, but the residuals are still not evenly distributed.
 
 ```{r}
 # Simple linear regression model
@@ -321,7 +392,7 @@ for(i in x)
       fit <- lm(ProportionPublicLibData ~ single_libs[[i]], data=single_libs) 
       coeff <- summary(fit)$coefficients[,4][2] #output only the p-values
       rsq <- summary(fit)$r.squared
-      writeLines(paste(coeff,i,rsq,"\n"))
+      if(!is.na(coeff) & coeff < 0.1) {writeLines(paste(coeff,i,rsq,"\n"))}
     }
 }
 ```
@@ -340,7 +411,7 @@ for(i in x)
        fit <- lm(CountVettedPublicLibData ~ single_libs[[i]], data=single_libs) 
        coeff <- summary(fit)$coefficients[,4][2] #output only the p-values
        rsq <- summary(fit)$r.squared
-       writeLines(paste(coeff,i,rsq,"\n"))
+       if(!is.na(coeff) & coeff < 0.1) {writeLines(paste(coeff,i,rsq,"\n"))}
     }
 }
 ```
