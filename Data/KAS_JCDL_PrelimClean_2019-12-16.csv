@@ -81,7 +81,7 @@ Milwaukee,WI,https://data.milwaukee.gov/,2019-12-16,CKAN,143,,1,Libraries,Facili
 Minneapolis,MN,http://opendata.minneapolismn.gov/,2019-12-16,Arcgis,144,Restricted to Data,0,,,,,235
 Naperville,IL,https://data.naperville.il.us/,2019-12-16,Socrata,83,Restricted to type: datasets,0,,,,,N/A
 Nashville,TN,https://data.nashville.gov/,2019-12-16,Socrata,99,Restricted to type: datasets,3,Library facilities; Nashville public library - eMedia circulation; Nashville public library - physical circulation,FacilitiesAndGeospatial;CatalogAndCirculation;TechnologyOfferings,2019-10-29,,865
-New Orleans,LA,https://datadriven.nola.gov/home/,,Socrata,116,,0,,,,12/16/2019 website is down,940
+New Orleans,LA,https://datadriven.nola.gov/home/,2020-01-28,Socrata,116,Restricted to type: datasets,0,,,,12/16/2019 website is down,940
 New Orleans,LA,https://portal-nolagis.opendata.arcgis.com,2019-12-16,Arcgis,75,Restricted to Data,1,Public Libraries,FacilitiesAndGeospatial,2018-06-11,,940
 Newport News,VA,https://www.nnva.gov/2229/Open-Data,2019-12-16,Other,7,,0,,,,,70
 New York City,NY,https://opendata.cityofnewyork.us/,2019-12-16,Socrata,"2,031",Restricted to type: datasets,6,Queens Library Branches; NYPL Branch services 7-2010 to 6-2011. NYPL Branch Services - Manhattan; NYPL - Branch Services - Bronx; NYPL Branch Services - Staten Island; Brooklyn PL appointments,FacilitiesAndGeospatial;EventsAndOutreach;CatalogAndCirculation;Patrons;HumanResources,2019-11-22,Board appointments categorized as human resources,1740
