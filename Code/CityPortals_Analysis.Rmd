@@ -121,8 +121,8 @@ portals %>%
   ggplot(aes(CityState, Total_CountVettedPublicLibData)) +
     geom_bar(stat="identity", fill="steelblue") +
     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.4, size = 4)) +
-    xlab("City") +
-    ylab("Datasets Available") 
+    xlab("City State") +
+    ylab("Library Datasets Available on City Portal") 
 ggsave("~/Documents/Github/JCDL-Extended/Images/cities_barchart.png")
 ```
 
@@ -135,9 +135,49 @@ portals %>%
     geom_bar(stat="identity", fill="steelblue") +
     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.4, size = 4)) +
     geom_text(aes(label=Total_CountVettedPublicLibData), vjust=-0.4, color="black", size=2) +
-    xlab("City") +
-    ylab("Datasets Available") 
+    xlab("City State") +
+    ylab("Library Datasets Available on City Portal") 
 ggsave("~/Documents/Github/JCDL-Extended/Images/cities_barchart_sorted.png")
+```
+
+```{r}
+portals %>%
+  group_by(City, State) %>%
+  summarise(Total_CountVettedPublicLibData = sum(CountVettedPublicLibData)) %>%
+  filter(Total_CountVettedPublicLibData > 0) %>%
+  tidyr::unite(CityState, City, State, sep = " ", remove = F, na.rm = F) %>%
+  ggplot(aes(reorder(CityState, -Total_CountVettedPublicLibData), Total_CountVettedPublicLibData)) +
+    geom_bar(stat="identity", fill="steelblue") +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.4, size = 9)) +
+    geom_text(aes(label=Total_CountVettedPublicLibData), vjust=-0.4, color="black", size=3) +
+    xlab("City State") +
+    ylab("Library Datasets Available on City Portal") 
+ggsave("~/Documents/Github/JCDL-Extended/Images/cities_barchart_sorted_no_zeroes.png")
+```
+
+```{r}
+portals %>% tidyr::pivot_longer(
+  cols = c('LibraryDataCategories_CatalogAndCirculation',
+           'LibraryDataCategories_EventsAndOutreach',
+           'LibraryDataCategories_FacilitiesAndGeospatial',
+           'LibraryDataCategories_Financial',
+           'LibraryDataCategories_HumanResources',
+           'LibraryDataCategories_Patrons',
+           'LibraryDataCategories_PublicRecords',
+           'LibraryDataCategories_TechnologyOfferings'),
+  names_to = "Category",
+  values_to = "Total") %>%
+  group_by(Category) %>% 
+  summarise("GrandTotal" = sum(Total)) %>%
+  ggplot(aes(Category, GrandTotal)) +
+    geom_bar(stat="identity", fill="steelblue") +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.4, size = 9)) +
+    geom_text(aes(label=GrandTotal), vjust=1.1, color="white", size=3) +
+    xlab("Data Category") +
+    ylab("Total Count") 
+
+ggsave("~/Documents/Github/JCDL-Extended/Images/categories_barchart.png")
+
 ```
 
 
@@ -445,7 +485,7 @@ p <- ggplot(dfm, aes(variable, total)) +
   xlab("Dataset Category") +
   ylab("Datasets Available")
 p
-ggsave("~/Documents/Github/JCDL-Extended/Images/categories_barchart.png")
+ggsave("~/Documents/Github/JCDL-Extended/Images/single_libs_categories_barchart.png")
 ```
 
 ```{r}
@@ -465,7 +505,7 @@ p <- ggplot(dfm, aes(x = reorder(variable, -total), total)) +
   xlab("Dataset Category") +
   ylab("Datasets Available")
 p
-ggsave("~/Documents/Github/JCDL-Extended/Images/categories_barchart_sorted.png")
+ggsave("~/Documents/Github/JCDL-Extended/Images/single_libs_categories_barchart_sorted.png")
 ```
 
 ```{r}
@@ -490,7 +530,7 @@ p1 <- ggplot(no_ds2, aes(City, CountVettedPublicLibData)) +
   xlab("City") +
   ylab("Datasets Available") 
 p1
-ggsave("~/Documents/Github/JCDL-Extended/Images/cities_barchart.png")
+ggsave("~/Documents/Github/JCDL-Extended/Images/single_libs_cities_barchart.png")
 ```
 
 ```{r}
@@ -502,7 +542,7 @@ p1 <- ggplot(no_ds2, aes(x = reorder(City, -CountVettedPublicLibData), CountVett
   xlab("City") +
   ylab("Datasets Available") 
 p1
-ggsave("~/Documents/Github/JCDL-Extended/Images/cities_barchart_sorted_morethanone.png")
+ggsave("~/Documents/Github/JCDL-Extended/Images/single_libs_cities_barchart_sorted_no_zeroes.png")
 ```
 
 ```{r, fig.width=10, fig.height=4}
