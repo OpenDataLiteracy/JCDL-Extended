@@ -123,7 +123,7 @@ portals %>%
     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.4, size = 4)) +
     xlab("City State") +
     ylab("Library Datasets Available on City Portal") 
-ggsave("~/Documents/Github/JCDL-Extended/Images/cities_barchart.png")
+#ggsave("~/Documents/Github/JCDL-Extended/Images/cities_barchart.png")
 ```
 
 ```{r}
@@ -137,7 +137,7 @@ portals %>%
     geom_text(aes(label=Total_CountVettedPublicLibData), vjust=-0.4, color="black", size=2) +
     xlab("City State") +
     ylab("Library Datasets Available on City Portal") 
-ggsave("~/Documents/Github/JCDL-Extended/Images/cities_barchart_sorted.png")
+#ggsave("~/Documents/Github/JCDL-Extended/Images/cities_barchart_sorted.png")
 ```
 
 ```{r}
@@ -152,7 +152,7 @@ portals %>%
     geom_text(aes(label=Total_CountVettedPublicLibData), vjust=-0.4, color="black", size=3) +
     xlab("City State") +
     ylab("Library Datasets Available on City Portal") 
-ggsave("~/Documents/Github/JCDL-Extended/Images/cities_barchart_sorted_no_zeroes.png")
+#ggsave("~/Documents/Github/JCDL-Extended/Images/cities_barchart_sorted_no_zeroes.png")
 ```
 
 ```{r}
@@ -176,7 +176,7 @@ portals %>% tidyr::pivot_longer(
     xlab("Data Category") +
     ylab("Total Count") 
 
-ggsave("~/Documents/Github/JCDL-Extended/Images/categories_barchart.png")
+#ggsave("~/Documents/Github/JCDL-Extended/Images/categories_barchart.png")
 
 ```
 
@@ -256,7 +256,7 @@ merged %>%
   filter(n > 1)
 ```
 
-16 cities have more than one library system. New Orleans is not included in these results but has two rows in the data because it has two city data portals.
+15 cities have more than one library system. New Orleans is not included in these results but has two rows in the data because it has two city data portals.
 
 ```{r}
 # Count how many AEs are included in the individual cities add colum to dataframe
@@ -485,7 +485,7 @@ p <- ggplot(dfm, aes(variable, total)) +
   xlab("Dataset Category") +
   ylab("Datasets Available")
 p
-ggsave("~/Documents/Github/JCDL-Extended/Images/single_libs_categories_barchart.png")
+#ggsave("~/Documents/Github/JCDL-Extended/Images/single_libs_categories_barchart.png")
 ```
 
 ```{r}
@@ -505,7 +505,7 @@ p <- ggplot(dfm, aes(x = reorder(variable, -total), total)) +
   xlab("Dataset Category") +
   ylab("Datasets Available")
 p
-ggsave("~/Documents/Github/JCDL-Extended/Images/single_libs_categories_barchart_sorted.png")
+#ggsave("~/Documents/Github/JCDL-Extended/Images/single_libs_categories_barchart_sorted.png")
 ```
 
 ```{r}
@@ -530,7 +530,7 @@ p1 <- ggplot(no_ds2, aes(City, CountVettedPublicLibData)) +
   xlab("City") +
   ylab("Datasets Available") 
 p1
-ggsave("~/Documents/Github/JCDL-Extended/Images/single_libs_cities_barchart.png")
+#ggsave("~/Documents/Github/JCDL-Extended/Images/single_libs_cities_barchart.png")
 ```
 
 ```{r}
@@ -542,7 +542,7 @@ p1 <- ggplot(no_ds2, aes(x = reorder(City, -CountVettedPublicLibData), CountVett
   xlab("City") +
   ylab("Datasets Available") 
 p1
-ggsave("~/Documents/Github/JCDL-Extended/Images/single_libs_cities_barchart_sorted_no_zeroes.png")
+#ggsave("~/Documents/Github/JCDL-Extended/Images/single_libs_cities_barchart_sorted_no_zeroes.png")
 ```
 
 ```{r, fig.width=10, fig.height=4}
@@ -564,7 +564,7 @@ p1 <- ggplot(single_libs, aes(City, TOTINCM)) +
   xlab("City") +
   ylab("Total Library Revenue") 
 p1
-ggsave("~/Documents/Github/JCDL-Extended/Images/cities_revenue_barchart.png")
+#ggsave("~/Documents/Github/JCDL-Extended/Images/cities_revenue_barchart.png")
 ```
 
 ```{r}
