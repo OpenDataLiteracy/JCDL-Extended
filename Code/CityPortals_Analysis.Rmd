@@ -41,6 +41,14 @@ imls <- content(x, type="text/csv", encoding = "UTF-8")
 as.data.frame(imls)
 ```
 
+
+```{r}
+# How many distinct cities do we have?
+portals %>%
+  group_by(City, State) %>%
+  n_distinct()
+```
+
 **AE** refers to **administrative entity**: "the agency that is legally established under local or state law to provide public library service to the population of a local jurisdiction. [In the PLS] the terms **public library** and **public library system** mean an AE. The AE may have a single outlet or multiple outlets." 
 
 ```{r}
@@ -60,6 +68,33 @@ portals$OpenDataCensusScore2017 <- as.numeric(portals$OpenDataCensusScore2017)
 portals <- portals %>%
   filter(City != "Pittsburgh")
 ```
+
+```{r}
+# How many distinct cities do we have?
+portals %>%
+  group_by(City, State) %>%
+  n_distinct()
+```
+
+```{r}
+# How many cities with more than 0 library datasets
+portals %>%
+  group_by(City, State) %>%
+  filter(CountVettedPublicLibData > 0)
+```
+
+```{r}
+# How many library datasets exits in the data?
+portals %>%
+  summarise(sum(CountVettedPublicLibData, na.rm = T))
+```
+
+```{r}
+portals %>%
+  group_by(Portal_URL) %>%
+  n_distinct()
+```
+
 
 ```{r}
 # Split categories into individual categories based on comma dileaneation, then create dummy variables.
