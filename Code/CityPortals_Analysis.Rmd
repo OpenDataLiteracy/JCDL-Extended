@@ -34,6 +34,12 @@ as.data.frame(portals)
 ```
 
 ```{r}
+# Remove pittsburgh from dataset - the portal is not limited to the city of pittsburgh
+portals <- portals %>%
+  filter(City != "Pittsburgh")
+```
+
+```{r}
 # Read in IMLS Administrative Entities data stored in private github repository
 url=paste0("https://raw.githubusercontent.com/OpenDataLiteracy/JCDL-Extended/master/Data/IMLS_Data_PLS_FY17_AE_pud17i.csv")
 x=GET(url, add_headers(Authorization = paste("token", token, sep = " ")))
@@ -45,8 +51,14 @@ as.data.frame(imls)
 ```{r}
 # How many distinct cities do we have?
 portals %>%
-  group_by(City, State) %>%
+  select(City, State) %>%
   n_distinct()
+```
+
+```{r}
+# How many rows of each type of software?
+portals %>%
+  count(Software)
 ```
 
 **AE** refers to **administrative entity**: "the agency that is legally established under local or state law to provide public library service to the population of a local jurisdiction. [In the PLS] the terms **public library** and **public library system** mean an AE. The AE may have a single outlet or multiple outlets." 
@@ -55,8 +67,9 @@ portals %>%
 # Fix date formats
 portals$DateLibDataLastUpdated <- as.Date(portals$DateLibDataLastUpdated, format = "%Y-%m-%d")
 portals$DatePortalAccessed <- as.Date(portals$DatePortalAccessed, format = "%Y-%m-%d")
-# Variables to datatype character
-portals$Portal_URL <- as.character(portals$Portal_URL)
+# Designate variables as factor
+portals$LibraryDataCategories <- as.factor(portals$LibraryDataCategories)
+portals$Software <- as.factor(portals$Software)
 # Replace N/A with na
 portals$OpenDataCensusScore2017 <- ifelse(portals$OpenDataCensusScore2017 != "N/A", portals$OpenDataCensusScore2017, NA)
 # Variables to numeric
@@ -64,40 +77,29 @@ portals$OpenDataCensusScore2017 <- as.numeric(portals$OpenDataCensusScore2017)
 ```
 
 ```{r}
-# Remove pittsburgh from dataset - the portal is not limited to the city of pittsburgh
-portals <- portals %>%
-  filter(City != "Pittsburgh")
-```
-
-```{r}
-# How many distinct cities do we have?
-portals %>%
-  group_by(City, State) %>%
-  n_distinct()
-```
-
-```{r}
-# How many cities with more than 0 library datasets
+# What cities have more than 0 library datasets
 portals %>%
   group_by(City, State) %>%
   filter(CountVettedPublicLibData > 0)
 ```
 
 ```{r}
-# How many library datasets exits in the data?
+# how many cities have more than 0 library datasets (in case New Orleans shows up twice)
+portals %>%
+  group_by(City, State) %>%
+  filter(CountVettedPublicLibData > 0) %>%
+  select(City, State) %>%
+  n_distinct()
+```
+
+```{r}
+# How many library datasets exist in the data?
 portals %>%
   summarise(sum(CountVettedPublicLibData, na.rm = T))
 ```
 
 ```{r}
-portals %>%
-  group_by(Portal_URL) %>%
-  n_distinct()
-```
-
-
-```{r}
-# Split categories into individual categories based on comma dileaneation, then create dummy variables.
+# Split categories into individual categories based on comma delineation, then create dummy variables.
 portals <- cSplit_e(portals, split.col = "LibraryDataCategories", sep = ";", type = "character", 
          mode = "binary", fixed = TRUE, fill = 0)
 ```
@@ -140,13 +142,13 @@ merged <- merge(portals, imls, by.x = c("City", "State"), by.y = c("CITY", "STAB
 ```
 
 ```{r}
+# how many library datasets there are per distinct city
 #reference: https://stackoverflow.com/a/58653393/5593458
 portals %>%
   group_by(City, State) %>%
   summarise(Total_CountVettedPublicLibData = sum(CountVettedPublicLibData)) %>%
-  tidyr::unite(CityState, City, State, sep = " ", remove = F, na.rm = F)
+  tidyr::unite(CityState, City, State, sep = " ", remove = F, na.rm = F) # this creates a new column with city and state combined
 ```
-
 
 ```{r}
 portals %>%
