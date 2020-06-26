@@ -208,15 +208,37 @@ portals %>% tidyr::pivot_longer(
   summarise("GrandTotal" = sum(Total)) %>%
   ggplot(aes(Category, GrandTotal)) +
     geom_bar(stat="identity", fill="steelblue") +
-    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.4, size = 9)) +
+    theme(axis.text.x = element_text(angle = 60, hjust = 1, size = 9)) +
     geom_text(aes(label=GrandTotal), vjust=1.1, color="white", size=3) +
+    scale_x_discrete(labels=c("LibraryDataCategories_CatalogAndCirculation" = "Catalog & Circulation",
+                              "LibraryDataCategories_EventsAndOutreach" = "Events & dOutreach",
+                              "LibraryDataCategories_FacilitiesAndGeospatial" = "Facilities & Geospatial",
+                              "LibraryDataCategories_Financial" = "Financial",
+                              "LibraryDataCategories_HumanResources" = "Human Resources",
+                              "LibraryDataCategories_Patrons" = "Patrons",
+                              "LibraryDataCategories_PublicRecords" = "Public Records",
+                              "LibraryDataCategories_TechnologyOfferings" = "Technology Offerings")) +
     xlab("Data Category") +
-    ylab("Total Count") 
+    ylab("Total Count of Datasets") 
 
 #ggsave("~/Documents/Github/JCDL-Extended/Images/categories_barchart.png")
 
 ```
 
+```{r}
+portals %>%
+  count(Software) %>%
+  ggplot(aes(factor(Software, level = c("Arcgis", "CKAN", "DKAN", "JKAN", "Junar", "Opendatasoft", "Socrata", "Other")), n)) +
+    geom_bar(stat="identity", fill="steelblue") +
+    theme(axis.text.x = element_text(angle = 60, hjust = 1, size = 9)) +
+    geom_text(aes(label=n), vjust=1.1, color="white", size=3) +
+    scale_x_discrete(labels=c("Arcgis", "CKAN", "DKAN", "JKAN", "Junar", "Opendatasoft", "Socrata", "Other", "No Portal Found")) +
+    xlab("Portal Software") +
+    ylab("Total Count of Portals") 
+
+#ggsave("~/Documents/Github/JCDL-Extended/Images/software_barchart.png")
+
+```
 
 ```{r}
 # Check unique values
@@ -318,50 +340,65 @@ single_libs <- merged %>%
 
 ```{r}
 # Use this code to visualize missing data (probably best at 10 columns at a time)
-visdat::vis_miss(single_libs[1:10])
+#visdat::vis_miss(single_libs[1:10])
 ```
 
-
 ```{r}
-# Simple linear regression model
-single_libs_PropLR <- lm(ProportionPublicLibData ~ OpenDataCensusScore2017, data=single_libs)
-summary(single_libs_PropLR)
+#https://twitter.com/KellyBodwin/status/1272730871561244675?s=20
+# linear regression the dplyr way
+single_libs %>%
+    with(lm(ProportionPublicLibData ~ OpenDataCensusScore2017)) %>%
+    summary()
 ```
 
 There doesn't appear to be a strong relationship between the proportion of data in a city portal that is library data and the Open Data Census score from 2017.
 
 ```{r}
 # Simple linear regression model
-single_libs_VettLR <- lm(CountVettedPublicLibData ~ OpenDataCensusScore2017, data=single_libs)
-summary(single_libs_VettLR)
+single_libs %>%
+    with(lm(CountVettedPublicLibData ~ OpenDataCensusScore2017)) %>%
+    summary()
 ```
 
 There may be a positive relationship between number of library datasets available in a city portal and the Open Data Census score from 2017 but it's not a great fit. 
 
 ```{r}
-plot(single_libs_VettLR)
+single_libs %>%
+    with(lm(CountVettedPublicLibData ~ OpenDataCensusScore2017)) %>%
+    plot()
 ```
 
 Could try log of Count because it's heavily right-skewed:
 
 ```{r}
 # Simple linear regression model
-single_libs_VettLR_log <- lm(log(CountVettedPublicLibData + 0.0000001) ~ OpenDataCensusScore2017, data=single_libs)
-summary(single_libs_VettLR_log)
+single_libs %>%
+    with(lm(log(CountVettedPublicLibData + 0.0000001) ~ OpenDataCensusScore2017)) %>%
+    summary()
 ```
 
 Now it appears that there is not a relationship between the two variables.
 
 ```{r}
+single_libs %>%
+    with(lm(log(CountVettedPublicLibData + 0.0000001) ~ OpenDataCensusScore2017)) %>%
+    plot()
+```
+
+
+```{r}
 # Simple linear regression model
-single_libs_TotLR <- lm(TotalDataSetsAvailable ~ OpenDataCensusScore2017, data=single_libs)
-summary(single_libs_TotLR)
+single_libs %>%
+    with(lm(TotalDataSetsAvailable ~ OpenDataCensusScore2017)) %>%
+    summary()
 ```
 
 Now we see a statistically significant relationship between the total number of datasets available in a city portal and the Open Data Census score from 2017. The R-squared isn't great so we can check the residuals and qq plot. But a positive relationship between these two variables would not be surprising.
 
 ```{r}
-plot(single_libs_TotLR)
+single_libs %>%
+    with(lm(TotalDataSetsAvailable ~ OpenDataCensusScore2017)) %>%
+    plot()
 ```
 
 ```{r}
@@ -491,58 +528,6 @@ for(i in x)
        if(!is.na(coeff) & coeff < 0.1) {writeLines(paste(coeff,i,rsq,"\n"))}
     }
 }
-```
-
-```{r}
-dfm <- reshape2::melt(single_libs[,c('LibraryDataCategories_CatalogAndCirculation','LibraryDataCategories_EventsAndOutreach',
-                    'LibraryDataCategories_FacilitiesAndGeospatial', 'LibraryDataCategories_Financial',
-                    'LibraryDataCategories_HumanResources', 'LibraryDataCategories_Patrons',
-                    'LibraryDataCategories_PublicRecords', 'LibraryDataCategories_TechnologyOfferings')])
-```
-
-```{r}
-# total datasets by category
-dfm <- dfm %>% group_by(variable) %>% summarise("total" = sum(value))
-```
-
-```{r}
-# barchart of datset totals by category
-p <- ggplot(dfm, aes(variable, total)) +
-  geom_bar(stat="identity", fill="steelblue") +
-  scale_x_discrete(labels=c("LibraryDataCategories_CatalogAndCirculation" = "Catalog & Circulation",
-                            "LibraryDataCategories_EventsAndOutreach" = "Events & Outreach",
-                            "LibraryDataCategories_FacilitiesAndGeospatial" = "Facilities & Geospatial",
-                            "LibraryDataCategories_Financial" = "Financial",
-                            "LibraryDataCategories_HumanResources" = "Human Resources",
-                            "LibraryDataCategories_Patrons" = "Patrons",
-                            "LibraryDataCategories_PublicRecords" = "Public Records",
-                            "LibraryDataCategories_TechnologyOfferings" = "Technology Offerings")) +
-  theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
-  geom_text(aes(label=total), vjust=1.6, color="white", size=3.5) +
-  xlab("Dataset Category") +
-  ylab("Datasets Available")
-p
-#ggsave("~/Documents/Github/JCDL-Extended/Images/single_libs_categories_barchart.png")
-```
-
-```{r}
-# same barchart as above but arranged in descending order of dataset count
-p <- ggplot(dfm, aes(x = reorder(variable, -total), total)) +
-  geom_bar(stat="identity", fill="steelblue") +
-  scale_x_discrete(labels=c("LibraryDataCategories_CatalogAndCirculation" = "Catalog & Circulation",
-                            "LibraryDataCategories_EventsAndOutreach" = "Events & Outreach",
-                            "LibraryDataCategories_FacilitiesAndGeospatial" = "Facilities & Geospatial",
-                            "LibraryDataCategories_Financial" = "Financial",
-                            "LibraryDataCategories_HumanResources" = "Human Resources",
-                            "LibraryDataCategories_Patrons" = "Patrons",
-                            "LibraryDataCategories_PublicRecords" = "Public Records",
-                            "LibraryDataCategories_TechnologyOfferings" = "Technology Offerings")) +
-  theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
-  geom_text(aes(label=total), vjust=-0.4, color="black", size=3.5) +
-  xlab("Dataset Category") +
-  ylab("Datasets Available")
-p
-#ggsave("~/Documents/Github/JCDL-Extended/Images/single_libs_categories_barchart_sorted.png")
 ```
 
 ```{r}
